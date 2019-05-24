@@ -1,0 +1,23 @@
+sourceryCommand: null
+
+Prototype:
+  sources:
+    include:
+    - ./Prototyping
+  output: ./Prototyping/Prototypes.generated.swift
+  targets:
+  - Prototyping
+  import:
+  - UIKit
+  
+PrototypingTests:
+  sources:
+    include:
+    - ./Prototyping
+  output: ./PrototypingTests/Mock.generated.swift
+  targets:
+  - PrototypingTests
+  testable:
+  - Prototyping
+  import:
+  - UIKit

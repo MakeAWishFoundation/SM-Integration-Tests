@@ -1,0 +1,34 @@
+PODS:
+  - Sourcery (0.16.1)
+  - SwiftyMocky (3.3.0):
+    - SwiftyMocky/Core (= 3.3.0)
+  - SwiftyMocky/Core (3.3.0):
+    - Sourcery (>= 0.16)
+  - SwiftyMocky/Prototyping (3.3.0):
+    - Sourcery
+
+DEPENDENCIES:
+  - "SwiftyMocky (from `git@github.com:MakeAWishFoundation/SwiftyMocky.git`, branch `release/3.3.0`)"
+  - "SwiftyMocky/Prototyping (from `git@github.com:MakeAWishFoundation/SwiftyMocky.git`, branch `release/3.3.0`)"
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Sourcery
+
+EXTERNAL SOURCES:
+  SwiftyMocky:
+    :branch: release/3.3.0
+    :git: "git@github.com:MakeAWishFoundation/SwiftyMocky.git"
+
+CHECKOUT OPTIONS:
+  SwiftyMocky:
+    :commit: fc0cc13d93f567317711c358789f42c815c3509a
+    :git: "git@github.com:MakeAWishFoundation/SwiftyMocky.git"
+
+SPEC CHECKSUMS:
+  Sourcery: 16779170d35ee204666843b09031f36721a84bcc
+  SwiftyMocky: 73667cfda67846ba00f275e3461c1b0f1619ee3b
+
+PODFILE CHECKSUM: 43f5f21f22a128050a1ef8d3c991c487ac7da10d
+
+COCOAPODS: 1.5.3

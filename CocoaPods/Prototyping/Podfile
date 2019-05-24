@@ -1,0 +1,17 @@
+use_frameworks!
+platform :ios, "12.0"
+
+target 'Prototyping' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for Prototyping
+  pod 'SwiftyMocky/Prototyping', :git => 'git@github.com:MakeAWishFoundation/SwiftyMocky.git', :branch => 'release/3.3.0'
+
+  target 'PrototypingTests' do
+    inherit! :search_paths
+    # Pods for testing
+    pod 'SwiftyMocky', :git => 'git@github.com:MakeAWishFoundation/SwiftyMocky.git', :branch => 'release/3.3.0'
+  end
+
+end
