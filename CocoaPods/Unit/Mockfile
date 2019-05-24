@@ -1,0 +1,12 @@
+sourceryCommand: null
+UnitTests:
+  sources:
+    include:
+    - ./Unit
+  output: ./UnitTests/Mock.generated.swift
+  targets:
+  - UnitTests
+  testable:
+  - Unit
+  import:
+  - UIKit
