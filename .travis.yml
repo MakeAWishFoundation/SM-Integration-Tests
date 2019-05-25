@@ -10,7 +10,10 @@ matrix:
       script:
         - swift --version
         - fastlane ios test_carthage_unit
+        - fastlane ios test_carthage_prototyping
         - fastlane ios test_pods_unit
+        - fastlane ios test_pods_unit_static
+        - fastlane ios test_pods_prototyping
         - fastlane spm test
     
 notifications:

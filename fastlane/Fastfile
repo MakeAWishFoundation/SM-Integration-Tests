@@ -12,6 +12,15 @@ platform :ios do
         )
     end
 
+    desc "Carthage integration as main app prototyping library"
+    lane :test_carthage_prototyping do
+        sh "cd ./../Carthage/Prototyping && carthage update --platform iOS"
+        scan(
+            scheme: "PrototypingUITests",
+            project: "./Carthage/Prototyping/Prototyping.xcodeproj",
+        )
+    end
+
     desc "Cocoapods integration with unit tests"
     lane :test_pods_unit do
         sh "cd ./../CocoaPods/Unit && pod install"
@@ -21,7 +30,7 @@ platform :ios do
         )
     end
 
-    desc "Cocoapods integration with unit tests"
+    desc "Cocoapods integration with unit tests as Static library"
     lane :test_pods_unit_static do
         sh "cd ./../CocoaPods/Unit\ as \StaticLibrary && pod install"
         scan(
@@ -29,6 +38,16 @@ platform :ios do
             workspace: "./CocoaPods/Unit/Unit.xcworkspace",
         )
     end
+
+    desc "Cocoapods integration as main app prototyping library"
+    lane :test_pods_prototyping do
+        sh "cd ./../CocoaPods/Prototyping && pod install"
+        scan(
+            scheme: "PrototypingUITests",
+            workspace: "./CocoaPods/Prototyping/Prototyping.xcworkspace",
+        )
+    end
+
 end
 
 platform :spm do
