@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import SwiftyMocky
+import SwiftyPrototype
 
 class ViewController: UIViewController {
 

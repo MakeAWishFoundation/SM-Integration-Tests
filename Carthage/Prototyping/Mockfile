@@ -1,6 +1,7 @@
 sourceryCommand: null
 
 Prototype:
+  prototype: true
   sources:
     include:
     - ./Prototyping
@@ -9,4 +10,3 @@ Prototype:
   - Prototyping
   import:
   - UIKit
-  

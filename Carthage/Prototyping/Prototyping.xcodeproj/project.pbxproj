@@ -13,9 +13,9 @@
 		C8294E8722992C320036BC94 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C8294E8622992C320036BC94 /* Assets.xcassets */; };
 		C8294E8A22992C320036BC94 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8294E8822992C320036BC94 /* LaunchScreen.storyboard */; };
 		C8294E9522992C320036BC94 /* PrototypingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8294E9422992C320036BC94 /* PrototypingTests.swift */; };
-		C8294EA022992D640036BC94 /* SwiftyMocky.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8294E9F22992D630036BC94 /* SwiftyMocky.framework */; };
-		C8294EA122992D640036BC94 /* SwiftyMocky.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C8294E9F22992D630036BC94 /* SwiftyMocky.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C8294EA422992E730036BC94 /* Prototypes.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8294EA322992E730036BC94 /* Prototypes.generated.swift */; };
+		C8294EC522993D540036BC94 /* SwiftyPrototype.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8294EC422993D540036BC94 /* SwiftyPrototype.framework */; };
+		C8294EC622993D540036BC94 /* SwiftyPrototype.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C8294EC422993D540036BC94 /* SwiftyPrototype.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C8294EC7229940800036BC94 /* Prototypes.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8294EA322992E730036BC94 /* Prototypes.generated.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,13 +29,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		C8294EA222992D640036BC94 /* Embed Frameworks */ = {
+		C8294EC32299386C0036BC94 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				C8294EA122992D640036BC94 /* SwiftyMocky.framework in Embed Frameworks */,
+				C8294EC622993D540036BC94 /* SwiftyPrototype.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -53,8 +53,8 @@
 		C8294E9022992C320036BC94 /* PrototypingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PrototypingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8294E9422992C320036BC94 /* PrototypingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrototypingTests.swift; sourceTree = "<group>"; };
 		C8294E9622992C320036BC94 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C8294E9F22992D630036BC94 /* SwiftyMocky.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyMocky.framework; path = Carthage/Build/iOS/SwiftyMocky.framework; sourceTree = "<group>"; };
 		C8294EA322992E730036BC94 /* Prototypes.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Prototypes.generated.swift; sourceTree = "<group>"; };
+		C8294EC422993D540036BC94 /* SwiftyPrototype.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyPrototype.framework; path = Carthage/Build/iOS/SwiftyPrototype.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,7 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C8294EA022992D640036BC94 /* SwiftyMocky.framework in Frameworks */,
+				C8294EC522993D540036BC94 /* SwiftyPrototype.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,7 +79,7 @@
 		C8294E7322992C310036BC94 = {
 			isa = PBXGroup;
 			children = (
-				C8294E9F22992D630036BC94 /* SwiftyMocky.framework */,
+				C8294EC422993D540036BC94 /* SwiftyPrototype.framework */,
 				C8294E7E22992C310036BC94 /* Prototyping */,
 				C8294E9322992C320036BC94 /* PrototypingTests */,
 				C8294E7D22992C310036BC94 /* Products */,
@@ -128,7 +128,7 @@
 				C8294E7822992C310036BC94 /* Sources */,
 				C8294E7922992C310036BC94 /* Frameworks */,
 				C8294E7A22992C310036BC94 /* Resources */,
-				C8294EA222992D640036BC94 /* Embed Frameworks */,
+				C8294EC32299386C0036BC94 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -222,7 +222,7 @@
 			files = (
 				C8294E8222992C310036BC94 /* ViewController.swift in Sources */,
 				C8294E8022992C310036BC94 /* AppDelegate.swift in Sources */,
-				C8294EA422992E730036BC94 /* Prototypes.generated.swift in Sources */,
+				C8294EC7229940800036BC94 /* Prototypes.generated.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -315,7 +315,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -370,7 +370,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -395,6 +395,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_SWIFT_FLAGS = "-DMockyCustom";
 				PRODUCT_BUNDLE_IDENTIFIER = com.test.Prototyping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -417,6 +418,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_SWIFT_FLAGS = "-DMockyCustom";
 				PRODUCT_BUNDLE_IDENTIFIER = com.test.Prototyping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
