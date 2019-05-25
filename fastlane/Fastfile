@@ -1,0 +1,30 @@
+fastlane_version "2.51.0"
+
+default_platform :ios
+
+platform :ios do
+    desc "Carthage integration with unit tests"
+    lane :test_carthage_unit do
+        sh "cd ./../Carthage/Unit && carthage update --platform iOS"
+        scan(
+            scheme: "UnitTests",
+            project: "./Carthage/Unit/Unit.xcodeproj",
+        )
+    end
+
+    desc "Cocoapods integration with unit tests"
+    lane :test_pods_unit do
+        sh "cd ./../CocoaPods/Unit && pod install"
+        scan(
+            scheme: "UnitTests",
+            workspace: "./CocoaPods/Unit/Unit.xcworkspace",
+        )
+    end
+end
+
+platform :spm do
+    desc "Runs all the tests"
+    lane :test do
+        sh "cd ../SwiftPM && swift test"
+    end
+end
