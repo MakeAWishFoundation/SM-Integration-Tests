@@ -1,16 +1,8 @@
-//
-//  PrototypingTests.swift
-//  PrototypingTests
-//
-//  Created by Andrzej Michnia on 25/05/2019.
-//  Copyright © 2019 MakeAWishFoundation. All rights reserved.
-//
-
 import XCTest
 import SwiftyMocky
-@testable import Prototyping
+@testable import Unit
 
-class UnitTests: XCTestCase {
+final class UnitTests: XCTestCase {
 
     func testExample() {
         let mock = NumberGeneratorMock()
@@ -20,4 +12,7 @@ class UnitTests: XCTestCase {
         XCTAssertEqual(mock.next(), 3)
     }
 
+    static var allTests = [
+        ("testExample", testExample),
+    ]
 }
