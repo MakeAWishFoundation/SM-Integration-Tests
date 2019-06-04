@@ -32,7 +32,7 @@ platform :ios do
 
     desc "Cocoapods integration with unit tests as Static library"
     lane :test_pods_unit_static do
-        sh "cd ./../CocoaPods/Unit\ as \StaticLibrary && pod install"
+        sh "cd ./../CocoaPods/UnitAsStaticLibrary && pod install"
         scan(
             scheme: "UnitTests",
             workspace: "./CocoaPods/Unit/Unit.xcworkspace",

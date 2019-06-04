@@ -1,0 +1,25 @@
+PODS:
+  - Sourcery (0.16.1)
+  - SwiftyMocky (3.3.1):
+    - SwiftyMocky/Core (= 3.3.1)
+  - SwiftyMocky/Core (3.3.1):
+    - Sourcery (>= 0.16)
+  - SwiftyMocky/Prototyping (3.3.1):
+    - Sourcery
+
+DEPENDENCIES:
+  - SwiftyMocky
+  - SwiftyMocky/Prototyping
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Sourcery
+    - SwiftyMocky
+
+SPEC CHECKSUMS:
+  Sourcery: 16779170d35ee204666843b09031f36721a84bcc
+  SwiftyMocky: ece1c006fab5a3fc3d8b94fd8f2175743b7e11ac
+
+PODFILE CHECKSUM: b541b04da658e9ccb844b43590537c6466eff142
+
+COCOAPODS: 1.5.3
