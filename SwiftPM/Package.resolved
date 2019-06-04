@@ -77,9 +77,9 @@
         "package": "swiftymocky",
         "repositoryURL": "https://github.com/MakeAWishFoundation/SwiftyMocky",
         "state": {
-          "branch": "release/3.3.0",
-          "revision": "342496728637ad142d9585b42f2914357c68b28a",
-          "version": null
+          "branch": null,
+          "revision": "f3f7957fc6c12f9e8b430fb1daf3d4e0e9444ab8",
+          "version": "3.3.1"
         }
       },
       {
