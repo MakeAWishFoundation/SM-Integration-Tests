@@ -8,7 +8,7 @@ target 'Prototyping' do
   target 'PrototypingTests' do
     inherit! :search_paths
     # Pods for testing
-    pod 'SwiftyMocky'
+    pod 'SwiftyMocky', '~> 3.3.4'
   end
 
 end
