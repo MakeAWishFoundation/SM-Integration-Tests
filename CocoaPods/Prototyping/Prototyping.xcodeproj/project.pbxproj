@@ -300,20 +300,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-PrototypingTests/Pods-PrototypingTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/SwiftyMocky/SwiftyMocky.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-PrototypingTests/Pods-PrototypingTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyMocky.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-PrototypingTests/Pods-PrototypingTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PrototypingTests/Pods-PrototypingTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PrototypingTests/Pods-PrototypingTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9A6D72E565F1AE98048821CC /* [CP] Check Pods Manifest.lock */ = {
@@ -366,20 +361,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Prototyping/Pods-Prototyping-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/SwiftyMocky-Prototyping/SwiftyMocky.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-Prototyping/Pods-Prototyping-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyMocky.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-Prototyping/Pods-Prototyping-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Prototyping/Pods-Prototyping-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Prototyping/Pods-Prototyping-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

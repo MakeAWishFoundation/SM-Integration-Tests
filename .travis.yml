@@ -5,7 +5,8 @@ matrix:
       osx_image: xcode10.2
       install:
         - brew install mint
-      before_script: 
+        - mint bootstrap
+      before_script:
         - echo -e "Host *\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
       script:
         - swift --version
@@ -16,6 +17,6 @@ matrix:
         - fastlane ios test_pods_unit_static
         - fastlane ios test_pods_prototyping
         - fastlane spm test
-    
+
 notifications:
   email: false

@@ -5,11 +5,12 @@ Prototype:
     include:
     - ./Prototyping
   output: ./Prototyping/Prototypes.generated.swift
+  prototype: true
   targets:
   - Prototyping
   import:
   - UIKit
-  
+
 PrototypingTests:
   sources:
     include:

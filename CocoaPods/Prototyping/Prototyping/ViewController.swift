@@ -7,13 +7,13 @@
 //
 
 import UIKit
-import SwiftyMocky
+import SwiftyPrototype
 
 class ViewController: UIViewController {
 
     @IBOutlet weak var numberLabel: UILabel!
 
-    let generator = NumberGeneratorMock()
+    let generator = NumberGeneratorPrototype()
 
     override func viewDidLoad() {
         super.viewDidLoad()
