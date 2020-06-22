@@ -6,7 +6,7 @@ platform :ios do
     desc "Carthage integration with unit tests"
     lane :test_carthage_unit do
         sh "cd ./../Carthage/Unit && carthage update --platform iOS"
-        sh "cd ./../Carthage/Unit && swiftymocky generate"
+        sh "cd ./../Carthage/Unit && mint run swiftymocky generate"
         scan(
             scheme: "UnitTests",
             project: "./Carthage/Unit/Unit.xcodeproj",
@@ -16,7 +16,7 @@ platform :ios do
     desc "Carthage integration as main app prototyping library"
     lane :test_carthage_prototyping do
         sh "cd ./../Carthage/Prototyping && carthage update --platform iOS"
-        sh "cd ./../Carthage/Unit && swiftymocky generate"
+        sh "cd ./../Carthage/Unit && mint run swiftymocky generate"
         scan(
             scheme: "PrototypingUITests",
             project: "./Carthage/Prototyping/Prototyping.xcodeproj",
@@ -55,7 +55,7 @@ end
 platform :spm do
     desc "Runs all the tests"
     lane :test do
-        sh "cd ./SwiftPM && swiftymocky generate"
+        sh "cd ./SwiftPM && mint run swiftymocky generate"
         sh "cd ../SwiftPM && swift test"
     end
 end

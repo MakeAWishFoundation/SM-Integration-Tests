@@ -13,5 +13,5 @@ target 'Unit' do
 end
 
 post_install do |installer|
-  system("swiftymocky generate")
+  system("mint run swiftymocky generate")
 end
