@@ -55,7 +55,7 @@ end
 platform :spm do
     desc "Runs all the tests"
     lane :test do
-        sh "cd ./SwiftPM && mint run swiftymocky generate"
+        sh "cd ../SwiftPM && mint run swiftymocky generate"
         sh "cd ../SwiftPM && swift test"
     end
 end
