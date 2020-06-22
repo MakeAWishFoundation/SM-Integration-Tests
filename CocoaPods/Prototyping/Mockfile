@@ -1,11 +1,11 @@
 sourceryCommand: null
 
 Prototype:
+  prototype: true
   sources:
     include:
     - ./Prototyping
   output: ./Prototyping/Prototypes.generated.swift
-  prototype: true
   targets:
   - Prototyping
   import:

@@ -1,40 +1,15 @@
-// Generated using Sourcery 0.16.1 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 0.18.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 
-
-// Generated with SwiftyMocky 3.3.0
+// Generated with SwiftyMocky 4.0.0
 
 import SwiftyMocky
-#if !MockyCustom
 import XCTest
-#endif
-import Foundation
 @testable import Mocky_Example_tvOS
-#if MockyCustom
-    public final class MockyAssertion {
-        public static var handler: ((Bool, String, StaticString, UInt) -> Void)?
-    }
-
-    func MockyAssert(_ expression: @autoclosure () -> Bool, _ message: @autoclosure () -> String = "Verification failed", file: StaticString = #file, line: UInt = #line) {
-        guard let handler = MockyAssertion.handler else {
-            assert(expression(), message(), file: file, line: line)
-            return
-        }
-
-        handler(expression(), message(), file, line)
-    }
-#else
-    func MockyAssert(_ expression: @autoclosure () -> Bool, _ message: @autoclosure () -> String = "Verification failed", file: StaticString = #file, line: UInt = #line) {
-        #if canImport(XCTest)
-        XCTAssert(expression(), message(), file: file, line: line)
-        #else 
-        assert(expression(), message(), file: file, line: line)
-        #endif
-    }
-#endif
 
 // MARK: - AMassiveTestProtocol
+
 open class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -62,6 +37,14 @@ open class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
         self.file = file
         self.line = line
     }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
     static var matcher: Matcher = Matcher.default
     static var stubbingPolicy: StubbingPolicy = .wrap
     static var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
@@ -70,10 +53,13 @@ open class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
     static private var methodPerformValues: [StaticPerform] = []
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
-    public static func clear() {
-        invocations = []
-        methodReturnValues = []
-        methodPerformValues = []
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public static func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
     public var nonOptionalClosure: () -> Void {
@@ -224,6 +210,16 @@ open class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 			case .p_optionalClosure_set(let newValue): return newValue.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .sm_methodThatThrows: return ".methodThatThrows()"
+            case .sm_methodThatReturnsAndThrows__param_param: return ".methodThatReturnsAndThrows(param:)"
+            case .sm_methodThatRethrows__param_param: return ".methodThatRethrows(param:)"
+            case .p_optionalClosure_get: return "[get] .optionalClosure"
+			case .p_optionalClosure_set: return "[set] .optionalClosure"
+
+            }
+        }
     }
 
     open class StaticGiven: StubbedMethod {
@@ -346,6 +342,19 @@ open class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 			case .p_implicitelyUnwrappedClosure_set(let newValue): return newValue.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_methodThatThrows: return ".methodThatThrows()"
+            case .m_methodThatReturnsAndThrows__param_param: return ".methodThatReturnsAndThrows(param:)"
+            case .m_methodThatRethrows__param_param: return ".methodThatRethrows(param:)"
+            case .p_nonOptionalClosure_get: return "[get] .nonOptionalClosure"
+			case .p_nonOptionalClosure_set: return "[set] .nonOptionalClosure"
+            case .p_optionalClosure_get: return "[get] .optionalClosure"
+			case .p_optionalClosure_set: return "[set] .optionalClosure"
+            case .p_implicitelyUnwrappedClosure_get: return "[get] .implicitelyUnwrappedClosure"
+			case .p_implicitelyUnwrappedClosure_set: return "[set] .implicitelyUnwrappedClosure"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -444,7 +453,7 @@ open class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -482,10 +491,8 @@ open class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 
     static public func given(_ method: StaticGiven) {
@@ -538,6 +545,7 @@ open class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 }
 
 // MARK: - AVeryAssociatedProtocol
+
 open class AVeryAssociatedProtocolMock<T1,T2>: AVeryAssociatedProtocol, Mock where T1: Sequence, T2: Comparable, T2: EmptyProtocol {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -564,6 +572,14 @@ open class AVeryAssociatedProtocolMock<T1,T2>: AVeryAssociatedProtocol, Mock whe
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -599,6 +615,11 @@ open class AVeryAssociatedProtocolMock<T1,T2>: AVeryAssociatedProtocol, Mock whe
         func intValue() -> Int {
             switch self {
             case let .m_fetch__for_value(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_fetch__for_value: return ".fetch(for:)"
             }
         }
     }
@@ -650,7 +671,7 @@ open class AVeryAssociatedProtocolMock<T1,T2>: AVeryAssociatedProtocol, Mock whe
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -688,14 +709,13 @@ open class AVeryAssociatedProtocolMock<T1,T2>: AVeryAssociatedProtocol, Mock whe
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - AVeryGenericProtocol
+
 open class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -723,6 +743,14 @@ open class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
         self.file = file
         self.line = line
     }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
     static var matcher: Matcher = Matcher.default
     static var stubbingPolicy: StubbingPolicy = .wrap
     static var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
@@ -731,10 +759,13 @@ open class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
     static private var methodPerformValues: [StaticPerform] = []
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
-    public static func clear() {
-        invocations = []
-        methodReturnValues = []
-        methodPerformValues = []
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public static func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -807,6 +838,13 @@ open class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
                 case let .sm_veryConstrained__lhs_lhsrhs_rhs(p0, p1): return p0.intValue + p1.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .sm_generic__lhs_lhsrhs_rhs: return ".generic(lhs:rhs:)"
+            case .sm_veryConstrained__lhs_lhsrhs_rhs: return ".veryConstrained(lhs:rhs:)"
+
+            }
+        }
     }
 
     open class StaticGiven: StubbedMethod {
@@ -818,20 +856,20 @@ open class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
         }
 
 
-        public static func generic<Q>(lhs: Parameter<Q>, rhs: Parameter<Q>, willReturn: Bool...) -> StaticMethodStub {
+        public static func generic<Q>(lhs: Parameter<Q>, rhs: Parameter<Q>, willReturn: Bool...) -> StaticMethodStub where Q: Equatable {
             return StaticGiven(method: .sm_generic__lhs_lhsrhs_rhs(`lhs`.wrapAsGeneric(), `rhs`.wrapAsGeneric()), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func veryConstrained<Q: Sequence>(lhs: Parameter<Q>, rhs: Parameter<Q>, willReturn: Bool...) -> StaticMethodStub {
+        public static func veryConstrained<Q: Sequence>(lhs: Parameter<Q>, rhs: Parameter<Q>, willReturn: Bool...) -> StaticMethodStub where Q: Equatable {
             return StaticGiven(method: .sm_veryConstrained__lhs_lhsrhs_rhs(`lhs`.wrapAsGeneric(), `rhs`.wrapAsGeneric()), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func generic<Q>(lhs: Parameter<Q>, rhs: Parameter<Q>, willProduce: (Stubber<Bool>) -> Void) -> StaticMethodStub {
+        public static func generic<Q>(lhs: Parameter<Q>, rhs: Parameter<Q>, willProduce: (Stubber<Bool>) -> Void) -> StaticMethodStub where Q: Equatable {
             let willReturn: [Bool] = []
 			let given: StaticGiven = { return StaticGiven(method: .sm_generic__lhs_lhsrhs_rhs(`lhs`.wrapAsGeneric(), `rhs`.wrapAsGeneric()), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
 			let stubber = given.stub(for: (Bool).self)
 			willProduce(stubber)
 			return given
         }
-        public static func veryConstrained<Q: Sequence>(lhs: Parameter<Q>, rhs: Parameter<Q>, willProduce: (Stubber<Bool>) -> Void) -> StaticMethodStub {
+        public static func veryConstrained<Q: Sequence>(lhs: Parameter<Q>, rhs: Parameter<Q>, willProduce: (Stubber<Bool>) -> Void) -> StaticMethodStub where Q: Equatable {
             let willReturn: [Bool] = []
 			let given: StaticGiven = { return StaticGiven(method: .sm_veryConstrained__lhs_lhsrhs_rhs(`lhs`.wrapAsGeneric(), `rhs`.wrapAsGeneric()), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
 			let stubber = given.stub(for: (Bool).self)
@@ -874,6 +912,11 @@ open class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
         func intValue() -> Int {
             switch self {
             case let .m_methodConstrained__param_param(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_methodConstrained__param_param: return ".methodConstrained(param:)"
             }
         }
     }
@@ -925,7 +968,7 @@ open class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -963,10 +1006,8 @@ open class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 
     static public func given(_ method: StaticGiven) {
@@ -1019,6 +1060,7 @@ open class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
 }
 
 // MARK: - AllLiteralsContainer
+
 open class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -1045,6 +1087,14 @@ open class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -1205,6 +1255,34 @@ open class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 		return __value
     }
 
+    open func methodWithSetOfInt(p: Set<Int>) -> Int {
+        addInvocation(.m_methodWithSetOfInt__p_p(Parameter<Set<Int>>.value(`p`)))
+		let perform = methodPerformValue(.m_methodWithSetOfInt__p_p(Parameter<Set<Int>>.value(`p`))) as? (Set<Int>) -> Void
+		perform?(`p`)
+		var __value: Int
+		do {
+		    __value = try methodReturnValue(.m_methodWithSetOfInt__p_p(Parameter<Set<Int>>.value(`p`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for methodWithSetOfInt(p: Set<Int>). Use given")
+			Failure("Stub return value not specified for methodWithSetOfInt(p: Set<Int>). Use given")
+		}
+		return __value
+    }
+
+    open func methodWithOptionalSetOfInt(p: Set<Int>?) -> Int {
+        addInvocation(.m_methodWithOptionalSetOfInt__p_p(Parameter<Set<Int>?>.value(`p`)))
+		let perform = methodPerformValue(.m_methodWithOptionalSetOfInt__p_p(Parameter<Set<Int>?>.value(`p`))) as? (Set<Int>?) -> Void
+		perform?(`p`)
+		var __value: Int
+		do {
+		    __value = try methodReturnValue(.m_methodWithOptionalSetOfInt__p_p(Parameter<Set<Int>?>.value(`p`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for methodWithOptionalSetOfInt(p: Set<Int>?). Use given")
+			Failure("Stub return value not specified for methodWithOptionalSetOfInt(p: Set<Int>?). Use given")
+		}
+		return __value
+    }
+
     open func methodWithDict(p: [String: SomeClass]) -> Int {
         addInvocation(.m_methodWithDict__p_p(Parameter<[String: SomeClass]>.value(`p`)))
 		let perform = methodPerformValue(.m_methodWithDict__p_p(Parameter<[String: SomeClass]>.value(`p`))) as? ([String: SomeClass]) -> Void
@@ -1232,6 +1310,8 @@ open class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
         case m_methodWithDouble__p_p(Parameter<Double?>)
         case m_methodWithArrayOfInt__p_p(Parameter<[Int]>)
         case m_methodWithArrayOfOther__p_p(Parameter<[SomeClass]>)
+        case m_methodWithSetOfInt__p_p(Parameter<Set<Int>>)
+        case m_methodWithOptionalSetOfInt__p_p(Parameter<Set<Int>?>)
         case m_methodWithDict__p_p(Parameter<[String: SomeClass]>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
@@ -1269,6 +1349,12 @@ open class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
             case (.m_methodWithArrayOfOther__p_p(let lhsP), .m_methodWithArrayOfOther__p_p(let rhsP)):
                 guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
                 return true 
+            case (.m_methodWithSetOfInt__p_p(let lhsP), .m_methodWithSetOfInt__p_p(let rhsP)):
+                guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                return true 
+            case (.m_methodWithOptionalSetOfInt__p_p(let lhsP), .m_methodWithOptionalSetOfInt__p_p(let rhsP)):
+                guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                return true 
             case (.m_methodWithDict__p_p(let lhsP), .m_methodWithDict__p_p(let rhsP)):
                 guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
                 return true 
@@ -1289,7 +1375,27 @@ open class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
             case let .m_methodWithDouble__p_p(p0): return p0.intValue
             case let .m_methodWithArrayOfInt__p_p(p0): return p0.intValue
             case let .m_methodWithArrayOfOther__p_p(p0): return p0.intValue
+            case let .m_methodWithSetOfInt__p_p(p0): return p0.intValue
+            case let .m_methodWithOptionalSetOfInt__p_p(p0): return p0.intValue
             case let .m_methodWithDict__p_p(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_methodWithStringParameter__p_p: return ".methodWithStringParameter(p:)"
+            case .m_methodWithOtionalStringParameter__p_p: return ".methodWithOtionalStringParameter(p:)"
+            case .m_methodWithCustomStringParameter__p_p: return ".methodWithCustomStringParameter(p:)"
+            case .m_methodWithCustomOptionalStringParameter__p_p: return ".methodWithCustomOptionalStringParameter(p:)"
+            case .m_methodWithIntParameter__p_p: return ".methodWithIntParameter(p:)"
+            case .m_methodWithCustomOptionalIntParameter__p_p: return ".methodWithCustomOptionalIntParameter(p:)"
+            case .m_methodWithBool__p_p: return ".methodWithBool(p:)"
+            case .m_methodWithFloat__p_p: return ".methodWithFloat(p:)"
+            case .m_methodWithDouble__p_p: return ".methodWithDouble(p:)"
+            case .m_methodWithArrayOfInt__p_p: return ".methodWithArrayOfInt(p:)"
+            case .m_methodWithArrayOfOther__p_p: return ".methodWithArrayOfOther(p:)"
+            case .m_methodWithSetOfInt__p_p: return ".methodWithSetOfInt(p:)"
+            case .m_methodWithOptionalSetOfInt__p_p: return ".methodWithOptionalSetOfInt(p:)"
+            case .m_methodWithDict__p_p: return ".methodWithDict(p:)"
             }
         }
     }
@@ -1335,6 +1441,12 @@ open class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
         }
         public static func methodWithArrayOfOther(p: Parameter<[SomeClass]>, willReturn: Int...) -> MethodStub {
             return Given(method: .m_methodWithArrayOfOther__p_p(`p`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func methodWithSetOfInt(p: Parameter<Set<Int>>, willReturn: Int...) -> MethodStub {
+            return Given(method: .m_methodWithSetOfInt__p_p(`p`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func methodWithOptionalSetOfInt(p: Parameter<Set<Int>?>, willReturn: Int...) -> MethodStub {
+            return Given(method: .m_methodWithOptionalSetOfInt__p_p(`p`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func methodWithDict(p: Parameter<[String: SomeClass]>, willReturn: Int...) -> MethodStub {
             return Given(method: .m_methodWithDict__p_p(`p`), products: willReturn.map({ StubProduct.return($0 as Any) }))
@@ -1416,6 +1528,20 @@ open class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 			willProduce(stubber)
 			return given
         }
+        public static func methodWithSetOfInt(p: Parameter<Set<Int>>, willProduce: (Stubber<Int>) -> Void) -> MethodStub {
+            let willReturn: [Int] = []
+			let given: Given = { return Given(method: .m_methodWithSetOfInt__p_p(`p`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Int).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func methodWithOptionalSetOfInt(p: Parameter<Set<Int>?>, willProduce: (Stubber<Int>) -> Void) -> MethodStub {
+            let willReturn: [Int] = []
+			let given: Given = { return Given(method: .m_methodWithOptionalSetOfInt__p_p(`p`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Int).self)
+			willProduce(stubber)
+			return given
+        }
         public static func methodWithDict(p: Parameter<[String: SomeClass]>, willProduce: (Stubber<Int>) -> Void) -> MethodStub {
             let willReturn: [Int] = []
 			let given: Given = { return Given(method: .m_methodWithDict__p_p(`p`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
@@ -1439,6 +1565,8 @@ open class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
         public static func methodWithDouble(p: Parameter<Double?>) -> Verify { return Verify(method: .m_methodWithDouble__p_p(`p`))}
         public static func methodWithArrayOfInt(p: Parameter<[Int]>) -> Verify { return Verify(method: .m_methodWithArrayOfInt__p_p(`p`))}
         public static func methodWithArrayOfOther(p: Parameter<[SomeClass]>) -> Verify { return Verify(method: .m_methodWithArrayOfOther__p_p(`p`))}
+        public static func methodWithSetOfInt(p: Parameter<Set<Int>>) -> Verify { return Verify(method: .m_methodWithSetOfInt__p_p(`p`))}
+        public static func methodWithOptionalSetOfInt(p: Parameter<Set<Int>?>) -> Verify { return Verify(method: .m_methodWithOptionalSetOfInt__p_p(`p`))}
         public static func methodWithDict(p: Parameter<[String: SomeClass]>) -> Verify { return Verify(method: .m_methodWithDict__p_p(`p`))}
     }
 
@@ -1479,6 +1607,12 @@ open class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
         public static func methodWithArrayOfOther(p: Parameter<[SomeClass]>, perform: @escaping ([SomeClass]) -> Void) -> Perform {
             return Perform(method: .m_methodWithArrayOfOther__p_p(`p`), performs: perform)
         }
+        public static func methodWithSetOfInt(p: Parameter<Set<Int>>, perform: @escaping (Set<Int>) -> Void) -> Perform {
+            return Perform(method: .m_methodWithSetOfInt__p_p(`p`), performs: perform)
+        }
+        public static func methodWithOptionalSetOfInt(p: Parameter<Set<Int>?>, perform: @escaping (Set<Int>?) -> Void) -> Perform {
+            return Perform(method: .m_methodWithOptionalSetOfInt__p_p(`p`), performs: perform)
+        }
         public static func methodWithDict(p: Parameter<[String: SomeClass]>, perform: @escaping ([String: SomeClass]) -> Void) -> Perform {
             return Perform(method: .m_methodWithDict__p_p(`p`), performs: perform)
         }
@@ -1495,7 +1629,7 @@ open class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -1533,14 +1667,13 @@ open class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - AnotherProtocol
+
 open class AnotherProtocolMock: AnotherProtocol, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -1567,6 +1700,14 @@ open class AnotherProtocolMock: AnotherProtocol, Mock {
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -1614,6 +1755,12 @@ open class AnotherProtocolMock: AnotherProtocol, Mock {
             switch self {
             case let .m_doSomething__type_type(p0): return p0.intValue
             case let .m_doSomething2__type_typewithValue_withValue(p0, p1): return p0.intValue + p1.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_doSomething__type_type: return ".doSomething(type:)"
+            case .m_doSomething2__type_typewithValue_withValue: return ".doSomething2(type:withValue:)"
             }
         }
     }
@@ -1669,7 +1816,7 @@ open class AnotherProtocolMock: AnotherProtocol, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -1707,14 +1854,13 @@ open class AnotherProtocolMock: AnotherProtocol, Mock {
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - ComplicatedServiceType
+
 open class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -1743,10 +1889,16 @@ open class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         self.line = line
     }
 
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
     public var youCouldOnlyGetThis: String {
 		get {	invocations.append(.p_youCouldOnlyGetThis_get); return __p_youCouldOnlyGetThis ?? givenGetterValue(.p_youCouldOnlyGetThis_get, "ComplicatedServiceTypeMock - stub value for youCouldOnlyGetThis was not defined") }
-		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
-		set {	__p_youCouldOnlyGetThis = newValue }
 	}
 	private var __p_youCouldOnlyGetThis: (String)?
 
@@ -1923,6 +2075,20 @@ open class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
             case .p_youCouldOnlyGetThis_get: return 0
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_serviceName: return ".serviceName()"
+            case .m_aNewWayToSayHooray: return ".aNewWayToSayHooray()"
+            case .m_getPoint__from_point: return ".getPoint(from:)"
+            case .m_getPoint__from_tuple: return ".getPoint(from:)"
+            case .m_similarMethodThatDiffersOnType__value_1: return ".similarMethodThatDiffersOnType(_:)"
+            case .m_similarMethodThatDiffersOnType__value_2: return ".similarMethodThatDiffersOnType(_:)"
+            case .m_methodWithTypedef__scalar: return ".methodWithTypedef(_:)"
+            case .m_methodWithClosures__success_function_1: return ".methodWithClosures(success:)"
+            case .m_methodWithClosures__success_function_2: return ".methodWithClosures(success:)"
+            case .p_youCouldOnlyGetThis_get: return "[get] .youCouldOnlyGetThis"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -2068,7 +2234,7 @@ open class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -2106,14 +2272,13 @@ open class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - DateSortable
+
 open class DateSortableMock: DateSortable, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -2142,10 +2307,16 @@ open class DateSortableMock: DateSortable, Mock {
         self.line = line
     }
 
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
     public var date: Date {
 		get {	invocations.append(.p_date_get); return __p_date ?? givenGetterValue(.p_date_get, "DateSortableMock - stub value for date was not defined") }
-		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
-		set {	__p_date = newValue }
 	}
 	private var __p_date: (Date)?
 
@@ -2166,6 +2337,11 @@ open class DateSortableMock: DateSortable, Mock {
         func intValue() -> Int {
             switch self {
             case .p_date_get: return 0
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .p_date_get: return "[get] .date"
             }
         }
     }
@@ -2207,7 +2383,7 @@ open class DateSortableMock: DateSortable, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -2245,14 +2421,13 @@ open class DateSortableMock: DateSortable, Mock {
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - EdgeCasesGenericsProtocol
+
 open class EdgeCasesGenericsProtocolMock: EdgeCasesGenericsProtocol, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -2279,6 +2454,14 @@ open class EdgeCasesGenericsProtocolMock: EdgeCasesGenericsProtocol, Mock {
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -2326,6 +2509,12 @@ open class EdgeCasesGenericsProtocolMock: EdgeCasesGenericsProtocol, Mock {
             switch self {
             case let .m_sorted__by_key(p0): return p0.intValue
             case let .m_getter__swapped_key(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_sorted__by_key: return ".sorted(by:)"
+            case .m_getter__swapped_key: return ".getter(swapped:)"
             }
         }
     }
@@ -2381,7 +2570,7 @@ open class EdgeCasesGenericsProtocolMock: EdgeCasesGenericsProtocol, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -2419,14 +2608,13 @@ open class EdgeCasesGenericsProtocolMock: EdgeCasesGenericsProtocol, Mock {
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - EmptyProtocol
+
 open class EmptyProtocolMock: EmptyProtocol, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -2455,6 +2643,14 @@ open class EmptyProtocolMock: EmptyProtocol, Mock {
         self.line = line
     }
 
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
 
 
 
@@ -2463,6 +2659,7 @@ open class EmptyProtocolMock: EmptyProtocol, Mock {
     fileprivate struct MethodType {
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
         func intValue() -> Int { return 0 }
+        func assertionName() -> String { return "" }
     }
 
     open class Given: StubbedMethod {
@@ -2498,7 +2695,7 @@ open class EmptyProtocolMock: EmptyProtocol, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -2536,14 +2733,13 @@ open class EmptyProtocolMock: EmptyProtocol, Mock {
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - FailsWithAutoClosureOnSwift5
+
 open class FailsWithAutoClosureOnSwift5Mock: FailsWithAutoClosureOnSwift5, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -2570,6 +2766,14 @@ open class FailsWithAutoClosureOnSwift5Mock: FailsWithAutoClosureOnSwift5, Mock 
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -2605,6 +2809,11 @@ open class FailsWithAutoClosureOnSwift5Mock: FailsWithAutoClosureOnSwift5, Mock 
         func intValue() -> Int {
             switch self {
             case let .m_connect__token(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_connect__token: return ".connect(_:)"
             }
         }
     }
@@ -2656,7 +2865,7 @@ open class FailsWithAutoClosureOnSwift5Mock: FailsWithAutoClosureOnSwift5, Mock 
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -2694,14 +2903,13 @@ open class FailsWithAutoClosureOnSwift5Mock: FailsWithAutoClosureOnSwift5, Mock 
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - FailsWithKeywordArguments
+
 open class FailsWithKeywordArgumentsMock: FailsWithKeywordArguments, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -2728,6 +2936,14 @@ open class FailsWithKeywordArgumentsMock: FailsWithKeywordArguments, Mock {
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
     public var `throw`: Error {
@@ -2832,6 +3048,17 @@ open class FailsWithKeywordArgumentsMock: FailsWithKeywordArguments, Mock {
 			case let .subscript_set_return(p0, _): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_foo__for_for: return ".foo(for:)"
+            case .m_throw__while_while: return ".`throw(while:)`"
+            case .m_return__do_while: return ".`return(do:)`"
+            case .p_throw_get: return "[get] .`throw`"
+			case .p_throw_set: return "[set] .`throw`"
+            case .subscript_get_return: return "[get] `subscript`[_ return]"
+			case .subscript_set_return: return "[set] `subscript`[_ return]"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -2909,7 +3136,7 @@ open class FailsWithKeywordArgumentsMock: FailsWithKeywordArguments, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -2947,14 +3174,13 @@ open class FailsWithKeywordArgumentsMock: FailsWithKeywordArguments, Mock {
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - FailsWithReturnedTypeBeingGenericOfSelf
+
 public final class FailsWithReturnedTypeBeingGenericOfSelfMock: FailsWithReturnedTypeBeingGenericOfSelf, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -2981,6 +3207,14 @@ public final class FailsWithReturnedTypeBeingGenericOfSelfMock: FailsWithReturne
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -3052,7 +3286,7 @@ public final class FailsWithReturnedTypeBeingGenericOfSelfMock: FailsWithReturne
 		return __value
     }
 
-    open func insanetTest(value: CustomGeneric<[FailsWithReturnedTypeBeingGenericOfSelfMock]>) -> Bool {
+    public func insanetTest(value: CustomGeneric<[FailsWithReturnedTypeBeingGenericOfSelfMock]>) -> Bool {
         addInvocation(.m_insanetTest__value_value(Parameter<CustomGeneric<[FailsWithReturnedTypeBeingGenericOfSelfMock]>>.value(`value`)))
 		let perform = methodPerformValue(.m_insanetTest__value_value(Parameter<CustomGeneric<[FailsWithReturnedTypeBeingGenericOfSelfMock]>>.value(`value`))) as? (CustomGeneric<[FailsWithReturnedTypeBeingGenericOfSelfMock]>) -> Void
 		perform?(`value`)
@@ -3099,6 +3333,15 @@ public final class FailsWithReturnedTypeBeingGenericOfSelfMock: FailsWithReturne
             case .m_methodWillReturnSelfTypedCustom: return 0
             case let .m_test__value_value(p0): return p0.intValue
             case let .m_insanetTest__value_value(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_methodWillReturnSelfTypedArray: return ".methodWillReturnSelfTypedArray()"
+            case .m_methodWillReturnSelfTypedArray2: return ".methodWillReturnSelfTypedArray2()"
+            case .m_methodWillReturnSelfTypedCustom: return ".methodWillReturnSelfTypedCustom()"
+            case .m_test__value_value: return ".test(value:)"
+            case .m_insanetTest__value_value: return ".insanetTest(value:)"
             }
         }
     }
@@ -3206,7 +3449,7 @@ public final class FailsWithReturnedTypeBeingGenericOfSelfMock: FailsWithReturne
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -3244,14 +3487,13 @@ public final class FailsWithReturnedTypeBeingGenericOfSelfMock: FailsWithReturne
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - FailsWithUntagged
+
 open class FailsWithUntaggedMock: FailsWithUntagged, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -3278,6 +3520,14 @@ open class FailsWithUntaggedMock: FailsWithUntagged, Mock {
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -3307,6 +3557,11 @@ open class FailsWithUntaggedMock: FailsWithUntagged, Mock {
         func intValue() -> Int {
             switch self {
             case let .m_foo__barbar(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_foo__barbar: return ".foo(_:bar:)"
             }
         }
     }
@@ -3348,7 +3603,7 @@ open class FailsWithUntaggedMock: FailsWithUntagged, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -3386,14 +3641,183 @@ open class FailsWithUntaggedMock: FailsWithUntagged, Mock {
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
+    }
+}
+
+// MARK: - GenericProtocolReturningInt
+
+open class GenericProtocolReturningIntMock: GenericProtocolReturningInt, Mock {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
+
+
+
+
+    open func value<T>(for value: T) -> Int {
+        addInvocation(.m_value__for_value(Parameter<T>.value(`value`).wrapAsGeneric()))
+		let perform = methodPerformValue(.m_value__for_value(Parameter<T>.value(`value`).wrapAsGeneric())) as? (T) -> Void
+		perform?(`value`)
+		var __value: Int
+		do {
+		    __value = try methodReturnValue(.m_value__for_value(Parameter<T>.value(`value`).wrapAsGeneric())).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for value<T>(for value: T). Use given")
+			Failure("Stub return value not specified for value<T>(for value: T). Use given")
+		}
+		return __value
+    }
+
+
+    fileprivate enum MethodType {
+        case m_value__for_value(Parameter<GenericAttribute>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+            case (.m_value__for_value(let lhsValue), .m_value__for_value(let rhsValue)):
+                guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
+                return true 
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case let .m_value__for_value(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_value__for_value: return ".value(for:)"
+            }
+        }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+        public static func value<T>(for value: Parameter<T>, willReturn: Int...) -> MethodStub {
+            return Given(method: .m_value__for_value(`value`.wrapAsGeneric()), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func value<T>(for value: Parameter<T>, willProduce: (Stubber<Int>) -> Void) -> MethodStub {
+            let willReturn: [Int] = []
+			let given: Given = { return Given(method: .m_value__for_value(`value`.wrapAsGeneric()), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Int).self)
+			willProduce(stubber)
+			return given
+        }
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        public static func value<T>(for value: Parameter<T>) -> Verify { return Verify(method: .m_value__for_value(`value`.wrapAsGeneric()))}
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        public static func value<T>(for value: Parameter<T>, perform: @escaping (T) -> Void) -> Perform {
+            return Perform(method: .m_value__for_value(`value`.wrapAsGeneric()), performs: perform)
+        }
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
     }
 }
 
 // MARK: - GenericProtocolWithTypeConstraint
+
 open class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstraint, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -3420,6 +3844,14 @@ open class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstra
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -3476,6 +3908,12 @@ open class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstra
             switch self {
             case let .m_decode__typefrom_data(p0, p1): return p0.intValue + p1.intValue
             case let .m_test__type(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_decode__typefrom_data: return ".decode(_:from:)"
+            case .m_test__type: return ".test(_:)"
             }
         }
     }
@@ -3541,7 +3979,7 @@ open class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstra
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -3579,14 +4017,13 @@ open class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstra
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - HistorySectionMapperType
+
 open class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -3613,6 +4050,14 @@ open class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -3648,6 +4093,11 @@ open class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
         func intValue() -> Int {
             switch self {
             case let .m_map__items(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_map__items: return ".map(_:)"
             }
         }
     }
@@ -3699,7 +4149,7 @@ open class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -3737,14 +4187,13 @@ open class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - InoutProtocol
+
 open class InoutProtocolMock: InoutProtocol, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -3771,6 +4220,14 @@ open class InoutProtocolMock: InoutProtocol, Mock {
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -3818,6 +4275,12 @@ open class InoutProtocolMock: InoutProtocol, Mock {
             switch self {
             case let .m_passThisAsInOut__value_value(p0): return p0.intValue
             case let .m_returnAndInOut__value_value(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_passThisAsInOut__value_value: return ".passThisAsInOut(value:)"
+            case .m_returnAndInOut__value_value: return ".returnAndInOut(value:)"
             }
         }
     }
@@ -3873,7 +4336,7 @@ open class InoutProtocolMock: InoutProtocol, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -3911,14 +4374,13 @@ open class InoutProtocolMock: InoutProtocol, Mock {
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - NonSwiftProtocol
+@objc
 open class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -3947,11 +4409,20 @@ open class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
         self.line = line
     }
 
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
 
 
 
 
-    open func returnNoting() {
+
+    @objc
+	open func returnNoting() {
         addInvocation(.m_returnNoting)
 		let perform = methodPerformValue(.m_returnNoting) as? () -> Void
 		perform?()
@@ -3982,6 +4453,12 @@ open class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
             switch self {
             case .m_returnNoting: return 0
             case .m_someMethod: return 0
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_returnNoting: return ".returnNoting()"
+            case .m_someMethod: return ".someMethod()"
             }
         }
     }
@@ -4027,7 +4504,7 @@ open class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -4065,14 +4542,13 @@ open class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - ProtocolMethodsGenericThatDifferOnlyInReturnType
+
 open class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGenericThatDifferOnlyInReturnType, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -4099,6 +4575,14 @@ open class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethods
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -4279,6 +4763,17 @@ open class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethods
             case let .m_foo__bar_bar_9(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_foo__bar_bar_1: return ".foo(bar:)"
+            case .m_foo__bar_bar_2: return ".foo(bar:)"
+            case .m_foo__bar_bar_4: return ".foo(bar:)"
+            case .m_foo__bar_bar_5: return ".foo(bar:)"
+            case .m_foo__bar_bar_6: return ".foo(bar:)"
+            case .m_foo__bar_bar_7: return ".foo(bar:)"
+            case .m_foo__bar_bar_9: return ".foo(bar:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -4296,10 +4791,10 @@ open class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethods
         public static func foo<T>(bar: Parameter<T>, willReturn: Int...) -> MethodStub {
             return Given(method: .m_foo__bar_bar_2(`bar`.wrapAsGeneric()), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func foo<T>(bar: Parameter<T>, willReturn: Float...) -> MethodStub {
+        public static func foo<T>(bar: Parameter<T>, willReturn: Float...) -> MethodStub where T: A {
             return Given(method: .m_foo__bar_bar_4(`bar`.wrapAsGeneric()), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func foo<T>(bar: Parameter<T>, willReturn: Double...) -> MethodStub {
+        public static func foo<T>(bar: Parameter<T>, willReturn: Double...) -> MethodStub where T: B {
             return Given(method: .m_foo__bar_bar_5(`bar`.wrapAsGeneric()), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func foo<T>(bar: Parameter<String>, willReturn: Array<T>...) -> MethodStub {
@@ -4308,7 +4803,7 @@ open class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethods
         public static func foo<T>(bar: Parameter<String>, willReturn: Set<T>...) -> MethodStub {
             return Given(method: .m_foo__bar_bar_7(`bar`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func foo<T>(bar: Parameter<Bool>, willReturn: T...) -> MethodStub {
+        public static func foo<T>(bar: Parameter<Bool>, willReturn: T...) -> MethodStub where T: A {
             return Given(method: .m_foo__bar_bar_9(`bar`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func foo<T>(bar: Parameter<T>, willProduce: (Stubber<String>) -> Void) -> MethodStub {
@@ -4325,14 +4820,14 @@ open class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethods
 			willProduce(stubber)
 			return given
         }
-        public static func foo<T>(bar: Parameter<T>, willProduce: (Stubber<Float>) -> Void) -> MethodStub {
+        public static func foo<T>(bar: Parameter<T>, willProduce: (Stubber<Float>) -> Void) -> MethodStub where T: A {
             let willReturn: [Float] = []
 			let given: Given = { return Given(method: .m_foo__bar_bar_4(`bar`.wrapAsGeneric()), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
 			let stubber = given.stub(for: (Float).self)
 			willProduce(stubber)
 			return given
         }
-        public static func foo<T>(bar: Parameter<T>, willProduce: (Stubber<Double>) -> Void) -> MethodStub {
+        public static func foo<T>(bar: Parameter<T>, willProduce: (Stubber<Double>) -> Void) -> MethodStub where T: B {
             let willReturn: [Double] = []
 			let given: Given = { return Given(method: .m_foo__bar_bar_5(`bar`.wrapAsGeneric()), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
 			let stubber = given.stub(for: (Double).self)
@@ -4353,7 +4848,7 @@ open class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethods
 			willProduce(stubber)
 			return given
         }
-        public static func foo<T>(bar: Parameter<Bool>, willProduce: (Stubber<T>) -> Void) -> MethodStub {
+        public static func foo<T>(bar: Parameter<Bool>, willProduce: (Stubber<T>) -> Void) -> MethodStub where T: A {
             let willReturn: [T] = []
 			let given: Given = { return Given(method: .m_foo__bar_bar_9(`bar`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
 			let stubber = given.stub(for: (T).self)
@@ -4367,11 +4862,11 @@ open class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethods
 
         public static func foo<T>(bar: Parameter<T>, returning: (String).Type) -> Verify { return Verify(method: .m_foo__bar_bar_1(`bar`.wrapAsGeneric()))}
         public static func foo<T>(bar: Parameter<T>, returning: (Int).Type) -> Verify { return Verify(method: .m_foo__bar_bar_2(`bar`.wrapAsGeneric()))}
-        public static func foo<T>(bar: Parameter<T>, returning: (Float).Type) -> Verify { return Verify(method: .m_foo__bar_bar_4(`bar`.wrapAsGeneric()))}
-        public static func foo<T>(bar: Parameter<T>, returning: (Double).Type) -> Verify { return Verify(method: .m_foo__bar_bar_5(`bar`.wrapAsGeneric()))}
+        public static func foo<T>(bar: Parameter<T>, returning: (Float).Type) -> Verify where T: A { return Verify(method: .m_foo__bar_bar_4(`bar`.wrapAsGeneric()))}
+        public static func foo<T>(bar: Parameter<T>, returning: (Double).Type) -> Verify where T: B { return Verify(method: .m_foo__bar_bar_5(`bar`.wrapAsGeneric()))}
         public static func foo<T>(bar: Parameter<String>, returning: (Array<T>).Type) -> Verify { return Verify(method: .m_foo__bar_bar_6(`bar`))}
         public static func foo<T>(bar: Parameter<String>, returning: (Set<T>).Type) -> Verify { return Verify(method: .m_foo__bar_bar_7(`bar`))}
-        public static func foo<T>(bar: Parameter<Bool>, returning: (T).Type) -> Verify { return Verify(method: .m_foo__bar_bar_9(`bar`))}
+        public static func foo<T>(bar: Parameter<Bool>, returning: (T).Type) -> Verify where T: A { return Verify(method: .m_foo__bar_bar_9(`bar`))}
     }
 
     public struct Perform {
@@ -4384,10 +4879,10 @@ open class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethods
         public static func foo<T>(bar: Parameter<T>, returning: (Int).Type, perform: @escaping (T) -> Void) -> Perform {
             return Perform(method: .m_foo__bar_bar_2(`bar`.wrapAsGeneric()), performs: perform)
         }
-        public static func foo<T>(bar: Parameter<T>, returning: (Float).Type, perform: @escaping (T) -> Void) -> Perform {
+        public static func foo<T>(bar: Parameter<T>, returning: (Float).Type, perform: @escaping (T) -> Void) -> Perform where T: A {
             return Perform(method: .m_foo__bar_bar_4(`bar`.wrapAsGeneric()), performs: perform)
         }
-        public static func foo<T>(bar: Parameter<T>, returning: (Double).Type, perform: @escaping (T) -> Void) -> Perform {
+        public static func foo<T>(bar: Parameter<T>, returning: (Double).Type, perform: @escaping (T) -> Void) -> Perform where T: B {
             return Perform(method: .m_foo__bar_bar_5(`bar`.wrapAsGeneric()), performs: perform)
         }
         public static func foo<T>(bar: Parameter<String>, returning: (Array<T>).Type, perform: @escaping (String) -> Void) -> Perform {
@@ -4396,7 +4891,7 @@ open class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethods
         public static func foo<T>(bar: Parameter<String>, returning: (Set<T>).Type, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_foo__bar_bar_7(`bar`), performs: perform)
         }
-        public static func foo<T>(bar: Parameter<Bool>, returning: (T).Type, perform: @escaping (Bool) -> Void) -> Perform {
+        public static func foo<T>(bar: Parameter<Bool>, returning: (T).Type, perform: @escaping (Bool) -> Void) -> Perform where T: A {
             return Perform(method: .m_foo__bar_bar_9(`bar`), performs: perform)
         }
     }
@@ -4412,7 +4907,7 @@ open class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethods
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -4450,14 +4945,13 @@ open class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethods
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - ProtocolMethodsThatDifferOnlyInReturnType
+
 open class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDifferOnlyInReturnType, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -4484,6 +4978,14 @@ open class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDif
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -4539,6 +5041,12 @@ open class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDif
             switch self {
             case let .m_foo__bar_bar_1(p0): return p0.intValue
             case let .m_foo__bar_bar_2(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_foo__bar_bar_1: return ".foo(bar:)"
+            case .m_foo__bar_bar_2: return ".foo(bar:)"
             }
         }
     }
@@ -4604,7 +5112,7 @@ open class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDif
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -4642,14 +5150,13 @@ open class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDif
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - ProtocolWithAssociatedType
+
 open class ProtocolWithAssociatedTypeMock<T>: ProtocolWithAssociatedType, Mock where T: Sequence {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -4678,10 +5185,16 @@ open class ProtocolWithAssociatedTypeMock<T>: ProtocolWithAssociatedType, Mock w
         self.line = line
     }
 
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
     public var sequence: T {
 		get {	invocations.append(.p_sequence_get); return __p_sequence ?? givenGetterValue(.p_sequence_get, "ProtocolWithAssociatedTypeMock - stub value for sequence was not defined") }
-		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
-		set {	__p_sequence = newValue }
 	}
 	private var __p_sequence: (T)?
 
@@ -4722,6 +5235,12 @@ open class ProtocolWithAssociatedTypeMock<T>: ProtocolWithAssociatedType, Mock w
             switch self {
             case let .m_methodWithType__t_t(p0): return p0.intValue
             case .p_sequence_get: return 0
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_methodWithType__t_t: return ".methodWithType(t:)"
+            case .p_sequence_get: return "[get] .sequence"
             }
         }
     }
@@ -4777,7 +5296,7 @@ open class ProtocolWithAssociatedTypeMock<T>: ProtocolWithAssociatedType, Mock w
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -4815,14 +5334,13 @@ open class ProtocolWithAssociatedTypeMock<T>: ProtocolWithAssociatedType, Mock w
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - ProtocolWithAssociatedType2
+
 open class ProtocolWithAssociatedType2Mock<ValueType>: ProtocolWithAssociatedType2, Mock where ValueType: StringConvertibleType {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -4851,10 +5369,16 @@ open class ProtocolWithAssociatedType2Mock<ValueType>: ProtocolWithAssociatedTyp
         self.line = line
     }
 
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
     public var property: String {
 		get {	invocations.append(.p_property_get); return __p_property ?? givenGetterValue(.p_property_get, "ProtocolWithAssociatedType2Mock - stub value for property was not defined") }
-		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
-		set {	__p_property = newValue }
 	}
 	private var __p_property: (String)?
 
@@ -4875,6 +5399,11 @@ open class ProtocolWithAssociatedType2Mock<ValueType>: ProtocolWithAssociatedTyp
         func intValue() -> Int {
             switch self {
             case .p_property_get: return 0
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .p_property_get: return "[get] .property"
             }
         }
     }
@@ -4916,7 +5445,7 @@ open class ProtocolWithAssociatedType2Mock<ValueType>: ProtocolWithAssociatedTyp
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -4954,14 +5483,398 @@ open class ProtocolWithAssociatedType2Mock<ValueType>: ProtocolWithAssociatedTyp
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
+    }
+}
+
+// MARK: - ProtocolWithAttributes
+@available(iOS 14, *) @objc
+open class ProtocolWithAttributesMock: NSObject, ProtocolWithAttributes, Mock {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
+
+
+
+
+    open func funcA() {
+        addInvocation(.m_funcA)
+		let perform = methodPerformValue(.m_funcA) as? () -> Void
+		perform?()
+    }
+
+
+    fileprivate enum MethodType {
+        case m_funcA
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+            case (.m_funcA, .m_funcA):
+                return true 
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case .m_funcA: return 0
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_funcA: return ".funcA()"
+            }
+        }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        public static func funcA() -> Verify { return Verify(method: .m_funcA)}
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        public static func funcA(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_funcA, performs: perform)
+        }
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+    }
+}
+
+// MARK: - ProtocolWithAttributesB
+
+open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
+
+
+
+
+    @available(iOS 14, *)
+	open func funcB(_ dependency: ProtocolWithAttributes) {
+        addInvocation(.m_funcB__dependency(Parameter<ProtocolWithAttributes>.value(`dependency`)))
+		let perform = methodPerformValue(.m_funcB__dependency(Parameter<ProtocolWithAttributes>.value(`dependency`))) as? (ProtocolWithAttributes) -> Void
+		perform?(`dependency`)
+    }
+
+    @discardableResult
+	open func inlinableFunc(_ val: Int) -> Int {
+        addInvocation(.m_inlinableFunc__val(Parameter<Int>.value(`val`)))
+		let perform = methodPerformValue(.m_inlinableFunc__val(Parameter<Int>.value(`val`))) as? (Int) -> Void
+		perform?(`val`)
+		var __value: Int
+		do {
+		    __value = try methodReturnValue(.m_inlinableFunc__val(Parameter<Int>.value(`val`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for inlinableFunc(_ val: Int). Use given")
+			Failure("Stub return value not specified for inlinableFunc(_ val: Int). Use given")
+		}
+		return __value
+    }
+
+    @available(iOS 12, macOS 10.14, *)
+	public subscript (_ x: Int, _ y: Int) -> String {
+		get {
+			addInvocation(.subscript_get_x_y(Parameter<Int>.value(`x`), Parameter<Int>.value(`y`)))
+			do {
+				return try methodReturnValue(.subscript_get_x_y(Parameter<Int>.value(`x`), Parameter<Int>.value(`y`))).casted()
+			} catch {
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
+			}
+		}
+		set {
+			addInvocation(.subscript_set_x_y(Parameter<Int>.value(`x`), Parameter<Int>.value(`y`), Parameter<String>.value(newValue)))
+		}
+	}
+
+
+    fileprivate enum MethodType {
+        @available(iOS 14, *)
+		case m_funcB__dependency(Parameter<ProtocolWithAttributes>)
+        case m_inlinableFunc__val(Parameter<Int>)
+        @available(iOS 12, macOS 10.14, *)
+		case subscript_get_x_y(Parameter<Int>, Parameter<Int>)
+		@available(iOS 12, macOS 10.14, *)
+		case subscript_set_x_y(Parameter<Int>, Parameter<Int>, Parameter<String>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+            case (.m_funcB__dependency(let lhsDependency), .m_funcB__dependency(let rhsDependency)):
+                guard Parameter.compare(lhs: lhsDependency, rhs: rhsDependency, with: matcher) else { return false } 
+                return true 
+            case (.m_inlinableFunc__val(let lhsVal), .m_inlinableFunc__val(let rhsVal)):
+                guard Parameter.compare(lhs: lhsVal, rhs: rhsVal, with: matcher) else { return false } 
+                return true 
+            case (let .subscript_get_x_y(lhsX, lhsY), let .subscript_get_x_y(rhsX, rhsY)):
+				guard Parameter.compare(lhs: lhsX, rhs: rhsX, with: matcher) else { return false }
+				guard Parameter.compare(lhs: lhsY, rhs: rhsY, with: matcher) else { return false }
+				return true
+			case (let .subscript_set_x_y(lhsX, lhsY, lhsDidSet), let .subscript_set_x_y(rhsX, rhsY, rhsDidSet)):
+				guard Parameter.compare(lhs: lhsX, rhs: rhsX, with: matcher) else { return false }
+				guard Parameter.compare(lhs: lhsY, rhs: rhsY, with: matcher) else { return false }
+				return Parameter.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
+            default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case let .m_funcB__dependency(p0): return p0.intValue
+            case let .m_inlinableFunc__val(p0): return p0.intValue
+            case let .subscript_get_x_y(p0, p1): return p0.intValue + p1.intValue
+			case let .subscript_set_x_y(p0, p1, _): return p0.intValue + p1.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_funcB__dependency: return ".funcB(_:)"
+            case .m_inlinableFunc__val: return ".inlinableFunc(_:)"
+            case .subscript_get_x_y: return "[get] `subscript`[_ x, _ y]"
+			case .subscript_set_x_y: return "[set] `subscript`[_ x, _ y]"
+            }
+        }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+        @discardableResult
+		public static func inlinableFunc(_ val: Parameter<Int>, willReturn: Int...) -> MethodStub {
+            return Given(method: .m_inlinableFunc__val(`val`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func inlinableFunc(_ val: Parameter<Int>, willProduce: (Stubber<Int>) -> Void) -> MethodStub {
+            let willReturn: [Int] = []
+			let given: Given = { return Given(method: .m_inlinableFunc__val(`val`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Int).self)
+			willProduce(stubber)
+			return given
+        }
+        @available(iOS 12, macOS 10.14, *)
+		public static func `subscript`(_ x: Parameter<Int>, _ y: Parameter<Int>, willReturn: String...) -> SubscriptStub {
+            return Given(method: .subscript_get_x_y(`x`, `y`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        @available(iOS 14, *)
+		public static func funcB(_ dependency: Parameter<ProtocolWithAttributes>) -> Verify { return Verify(method: .m_funcB__dependency(`dependency`))}
+        @discardableResult
+		public static func inlinableFunc(_ val: Parameter<Int>) -> Verify { return Verify(method: .m_inlinableFunc__val(`val`))}
+        @available(iOS 12, macOS 10.14, *)
+		public static func `subscript`(_ x: Parameter<Int>, _ y: Parameter<Int>) -> Verify { return Verify(method: .subscript_get_x_y(`x`, `y`))}
+        @available(iOS 12, macOS 10.14, *)
+		public static func `subscript`(_ x: Parameter<Int>, _ y: Parameter<Int>, set newValue: Parameter<String>) -> Verify { return Verify(method: .subscript_set_x_y(`x`, `y`, newValue))}
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        @available(iOS 14, *)
+		public static func funcB(_ dependency: Parameter<ProtocolWithAttributes>, perform: @escaping (ProtocolWithAttributes) -> Void) -> Perform {
+            return Perform(method: .m_funcB__dependency(`dependency`), performs: perform)
+        }
+        @discardableResult
+		public static func inlinableFunc(_ val: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
+            return Perform(method: .m_inlinableFunc__val(`val`), performs: perform)
+        }
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
     }
 }
 
 // MARK: - ProtocolWithClosures
+
 open class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -4988,6 +5901,14 @@ open class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -5040,6 +5961,13 @@ open class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
             case let .m_methodThatTakesCompletionBlock__completion_completion(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_methodThatTakes__closure_closure: return ".methodThatTakes(closure:)"
+            case .m_methodThatTakesEscaping__closure_closure: return ".methodThatTakesEscaping(closure:)"
+            case .m_methodThatTakesCompletionBlock__completion_completion: return ".methodThatTakesCompletionBlock(completion:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -5087,7 +6015,7 @@ open class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -5125,14 +6053,13 @@ open class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - ProtocolWithConflictingMembers
+
 open class ProtocolWithConflictingMembersMock: ProtocolWithConflictingMembers, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -5159,6 +6086,14 @@ open class ProtocolWithConflictingMembersMock: ProtocolWithConflictingMembers, M
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -5233,6 +6168,13 @@ open class ProtocolWithConflictingMembersMock: ProtocolWithConflictingMembers, M
             case let .m_method__withLabel_value(p0): return p0.intValue
             case let .m_method__value(p0): return p0.intValue
             case let .m_method__value_value(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_method__withLabel_value: return ".method(withLabel:)"
+            case .m_method__value: return ".method(_:)"
+            case .m_method__value_value: return ".method(value:)"
             }
         }
     }
@@ -5312,7 +6254,7 @@ open class ProtocolWithConflictingMembersMock: ProtocolWithConflictingMembers, M
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -5350,14 +6292,13 @@ open class ProtocolWithConflictingMembersMock: ProtocolWithConflictingMembers, M
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - ProtocolWithCustomAttributes
+
 open class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -5384,6 +6325,14 @@ open class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock 
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -5438,6 +6387,12 @@ open class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock 
             switch self {
             case let .m_methodThatTakesUser__user_user(p0): return p0.intValue
             case let .m_methodThatTakesArrayOfUsers__array_array(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_methodThatTakesUser__user_user: return ".methodThatTakesUser(user:)"
+            case .m_methodThatTakesArrayOfUsers__array_array: return ".methodThatTakesArrayOfUsers(array:)"
             }
         }
     }
@@ -5503,7 +6458,7 @@ open class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock 
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -5541,14 +6496,13 @@ open class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock 
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - ProtocolWithDeprecatedMembers
+
 open class ProtocolWithDeprecatedMembersMock: ProtocolWithDeprecatedMembers, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -5575,6 +6529,14 @@ open class ProtocolWithDeprecatedMembersMock: ProtocolWithDeprecatedMembers, Moc
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -5610,6 +6572,11 @@ open class ProtocolWithDeprecatedMembersMock: ProtocolWithDeprecatedMembers, Moc
         func intValue() -> Int {
             switch self {
             case let .m_method__value(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_method__value: return ".method(_:)"
             }
         }
     }
@@ -5661,7 +6628,7 @@ open class ProtocolWithDeprecatedMembersMock: ProtocolWithDeprecatedMembers, Moc
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -5699,14 +6666,195 @@ open class ProtocolWithDeprecatedMembersMock: ProtocolWithDeprecatedMembers, Moc
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
+    }
+}
+
+// MARK: - ProtocolWithGenericConstraints
+
+open class ProtocolWithGenericConstraintsMock<ContainedType>: ProtocolWithGenericConstraints, Mock {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
+    public var value: ContainedType {
+		get {	invocations.append(.p_value_get); return __p_value ?? givenGetterValue(.p_value_get, "ProtocolWithGenericConstraintsMock - stub value for value was not defined") }
+	}
+	private var __p_value: (ContainedType)?
+
+
+
+
+
+    open func extractString<U: CustomStringConvertible>() -> String? where ContainedType == Optional<U> {
+        addInvocation(.m_extractString)
+		let perform = methodPerformValue(.m_extractString) as? () -> Void
+		perform?()
+		var __value: String? = nil
+		do {
+		    __value = try methodReturnValue(.m_extractString).casted()
+		} catch {
+			// do nothing
+		}
+		return __value
+    }
+
+
+    fileprivate enum MethodType {
+        case m_extractString
+        case p_value_get
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+            case (.m_extractString, .m_extractString):
+                return true 
+            case (.p_value_get,.p_value_get): return true
+            default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case .m_extractString: return 0
+            case .p_value_get: return 0
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_extractString: return ".extractString()"
+            case .p_value_get: return "[get] .value"
+            }
+        }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+        public static func value(getter defaultValue: ContainedType...) -> PropertyStub {
+            return Given(method: .p_value_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+
+        public static func extractString<U: CustomStringConvertible>(willReturn: String?...) -> MethodStub where ContainedType == Optional<U> {
+            return Given(method: .m_extractString, products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func extractString<U: CustomStringConvertible>(willProduce: (Stubber<String?>) -> Void) -> MethodStub where ContainedType == Optional<U> {
+            let willReturn: [String?] = []
+			let given: Given = { return Given(method: .m_extractString, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (String?).self)
+			willProduce(stubber)
+			return given
+        }
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        public static func extractString() -> Verify { return Verify(method: .m_extractString)}
+        public static var value: Verify { return Verify(method: .p_value_get) }
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        public static func extractString(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_extractString, performs: perform)
+        }
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
     }
 }
 
 // MARK: - ProtocolWithGenericMethods
+
 open class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -5733,6 +6881,14 @@ open class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -5791,6 +6947,12 @@ open class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
             case let .m_methodWithGenericConstraint__param_param(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_methodWithGeneric__lhs_lhsrhs_rhs: return ".methodWithGeneric(lhs:rhs:)"
+            case .m_methodWithGenericConstraint__param_param: return ".methodWithGenericConstraint(param:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -5805,7 +6967,7 @@ open class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
         public static func methodWithGeneric<T>(lhs: Parameter<T>, rhs: Parameter<T>, willReturn: Bool...) -> MethodStub {
             return Given(method: .m_methodWithGeneric__lhs_lhsrhs_rhs(`lhs`.wrapAsGeneric(), `rhs`.wrapAsGeneric()), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func methodWithGenericConstraint<U>(param: Parameter<[U]>, willReturn: U...) -> MethodStub {
+        public static func methodWithGenericConstraint<U>(param: Parameter<[U]>, willReturn: U...) -> MethodStub where U: Equatable {
             return Given(method: .m_methodWithGenericConstraint__param_param(`param`.wrapAsGeneric()), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func methodWithGeneric<T>(lhs: Parameter<T>, rhs: Parameter<T>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
@@ -5815,7 +6977,7 @@ open class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
 			willProduce(stubber)
 			return given
         }
-        public static func methodWithGenericConstraint<U>(param: Parameter<[U]>, willProduce: (Stubber<U>) -> Void) -> MethodStub {
+        public static func methodWithGenericConstraint<U>(param: Parameter<[U]>, willProduce: (Stubber<U>) -> Void) -> MethodStub where U: Equatable {
             let willReturn: [U] = []
 			let given: Given = { return Given(method: .m_methodWithGenericConstraint__param_param(`param`.wrapAsGeneric()), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
 			let stubber = given.stub(for: (U).self)
@@ -5854,7 +7016,7 @@ open class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -5892,14 +7054,13 @@ open class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - ProtocolWithGenericMethodsNested
+
 open class ProtocolWithGenericMethodsNestedMock: ProtocolWithGenericMethodsNested, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -5926,6 +7087,14 @@ open class ProtocolWithGenericMethodsNestedMock: ProtocolWithGenericMethodsNeste
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -5961,6 +7130,11 @@ open class ProtocolWithGenericMethodsNestedMock: ProtocolWithGenericMethodsNeste
         func intValue() -> Int {
             switch self {
             case let .m_methodWithGeneric__resource_resource(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_methodWithGeneric__resource_resource: return ".methodWithGeneric(resource:)"
             }
         }
     }
@@ -6012,7 +7186,7 @@ open class ProtocolWithGenericMethodsNestedMock: ProtocolWithGenericMethodsNeste
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -6050,14 +7224,13 @@ open class ProtocolWithGenericMethodsNestedMock: ProtocolWithGenericMethodsNeste
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - ProtocolWithInitializers
+
 open class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -6086,17 +7259,21 @@ open class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
         self.line = line
     }
 
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
     public var param: Int {
 		get {	invocations.append(.p_param_get); return __p_param ?? givenGetterValue(.p_param_get, "ProtocolWithInitializersMock - stub value for param was not defined") }
-		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
-		set {	__p_param = newValue }
 	}
 	private var __p_param: (Int)?
 
     public var other: String {
 		get {	invocations.append(.p_other_get); return __p_other ?? givenGetterValue(.p_other_get, "ProtocolWithInitializersMock - stub value for other was not defined") }
-		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
-		set {	__p_other = newValue }
 	}
 	private var __p_other: (String)?
 
@@ -6125,6 +7302,12 @@ open class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
             switch self {
             case .p_param_get: return 0
             case .p_other_get: return 0
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .p_param_get: return "[get] .param"
+            case .p_other_get: return "[get] .other"
             }
         }
     }
@@ -6170,7 +7353,7 @@ open class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -6208,14 +7391,13 @@ open class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - ProtocolWithPropoerties
+
 open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -6243,6 +7425,14 @@ open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMoc
         self.file = file
         self.line = line
     }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
     static var matcher: Matcher = Matcher.default
     static var stubbingPolicy: StubbingPolicy = .wrap
     static var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
@@ -6251,10 +7441,13 @@ open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMoc
     static private var methodPerformValues: [StaticPerform] = []
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
-    public static func clear() {
-        invocations = []
-        methodReturnValues = []
-        methodPerformValues = []
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public static func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
     public var name: String {
@@ -6332,6 +7525,16 @@ open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMoc
 			case .p_defaultEmail_set(let newValue): return newValue.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .sm_defaultEmail__newValue: return ".defaultEmail(_:)"
+            case .p_name_get: return "[get] .name"
+			case .p_name_set: return "[set] .name"
+            case .p_defaultEmail_get: return "[get] .defaultEmail"
+			case .p_defaultEmail_set: return "[set] .defaultEmail"
+
+            }
+        }
     }
 
     open class StaticGiven: StubbedMethod {
@@ -6405,6 +7608,16 @@ open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMoc
 			case .p_email_set(let newValue): return newValue.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_name__newValue: return ".name(_:)"
+            case .m_email__newValue: return ".email(_:)"
+            case .p_name_get: return "[get] .name"
+			case .p_name_set: return "[set] .name"
+            case .p_email_get: return "[get] .email"
+			case .p_email_set: return "[set] .email"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -6458,7 +7671,7 @@ open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMoc
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -6496,10 +7709,8 @@ open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMoc
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 
     static public func given(_ method: StaticGiven) {
@@ -6552,6 +7763,7 @@ open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMoc
 }
 
 // MARK: - ProtocolWithStaticMembers
+
 open class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -6579,6 +7791,14 @@ open class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, Stati
         self.file = file
         self.line = line
     }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
     static var matcher: Matcher = Matcher.default
     static var stubbingPolicy: StubbingPolicy = .wrap
     static var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
@@ -6587,17 +7807,18 @@ open class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, Stati
     static private var methodPerformValues: [StaticPerform] = []
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
-    public static func clear() {
-        invocations = []
-        methodReturnValues = []
-        methodPerformValues = []
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public static func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
     public static var staticProperty: String {
 		get {	ProtocolWithStaticMembersMock.invocations.append(.p_staticProperty_get); return ProtocolWithStaticMembersMock.__p_staticProperty ?? givenGetterValue(.p_staticProperty_get, "ProtocolWithStaticMembersMock - stub value for staticProperty was not defined") }
-		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
-		set {	ProtocolWithStaticMembersMock.__p_staticProperty = newValue }
 	}
 	private static var __p_staticProperty: (String)?
 
@@ -6637,6 +7858,13 @@ open class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, Stati
             switch self {
                 case let .sm_staticMethod__param_param(p0): return p0.intValue
                 case .p_staticProperty_get: return 0
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .sm_staticMethod__param_param: return ".staticMethod(param:)"
+            case .p_staticProperty_get: return "[get] .staticProperty"
+
             }
         }
     }
@@ -6688,6 +7916,7 @@ open class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, Stati
     fileprivate struct MethodType {
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
         func intValue() -> Int { return 0 }
+        func assertionName() -> String { return "" }
     }
 
     open class Given: StubbedMethod {
@@ -6723,7 +7952,7 @@ open class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, Stati
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -6761,10 +7990,8 @@ open class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, Stati
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 
     static public func given(_ method: StaticGiven) {
@@ -6817,6 +8044,7 @@ open class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, Stati
 }
 
 // MARK: - ProtocolWithSubscripts
+
 open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -6843,6 +8071,14 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
     public var something: Any {
@@ -6964,7 +8200,7 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 		}
 	}
 
-    public subscript<T: FloatingPoint>(with generic: T) -> Int where T: FloatingPoint {
+    public subscript<T>(with generic: T) -> Int where T: FloatingPoint {
 		get {
 			addInvocation(.subscript_get_with_generic_2(Parameter<T>.value(`generic`).wrapAsGeneric()))
 			do {
@@ -7177,6 +8413,36 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 			case let .subscript_set_same_same_2(p0, _): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_aaa__value: return ".aaa(_:)"
+            case .p_something_get: return "[get] .something"
+			case .p_something_set: return "[set] .something"
+            case .subscript_get_index_1: return "[get] `subscript`[_ index]"
+			case .subscript_set_index_1: return "[set] `subscript`[_ index]"
+            case .subscript_get_labeled_index: return "[get] `subscript`[labeled index]"
+			case .subscript_set_labeled_index: return "[set] `subscript`[labeled index]"
+            case .subscript_get_x_y: return "[get] `subscript`[_ x, _ y]"
+			case .subscript_set_x_y: return "[set] `subscript`[_ x, _ y]"
+            case .subscript_get_index_2: return "[get] `subscript`[_ index]"
+			case .subscript_set_index_2: return "[set] `subscript`[_ index]"
+            case .subscript_get_index_index: return "[get] `subscript`[index]"
+			case .subscript_set_index_index: return "[set] `subscript`[index]"
+            case .subscript_get_label_name: return "[get] `subscript`[label name]"
+            case .subscript_get_with_generic_1: return "[get] `subscript`<T: Sequence>[with generic]"
+			case .subscript_set_with_generic_1: return "[set] `subscript`<T: Sequence>[with generic]"
+            case .subscript_get_with_generic_2: return "[get] `subscript`<T>[with generic]"
+			case .subscript_set_with_generic_2: return "[set] `subscript`<T>[with generic]"
+            case .subscript_get_i_type: return "[get] `subscript`<T>[_ i, _ type]"
+			case .subscript_set_i_type: return "[set] `subscript`<T>[_ i, _ type]"
+            case .subscript_get_closure_c: return "[get] `subscript`[closure c]"
+			case .subscript_set_closure_c: return "[set] `subscript`[closure c]"
+            case .subscript_get_same_same_1: return "[get] `subscript`[same]"
+			case .subscript_set_same_same_1: return "[set] `subscript`[same]"
+            case .subscript_get_same_same_2: return "[get] `subscript`[same]"
+			case .subscript_set_same_same_2: return "[set] `subscript`[same]"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -7222,7 +8488,7 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
         public static func `subscript`<T: Sequence>(with generic: Parameter<T>, willReturn: Bool...) -> SubscriptStub {
             return Given(method: .subscript_get_with_generic_1(`generic`.wrapAsGeneric()), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func `subscript`<T: FloatingPoint>(with generic: Parameter<T>, willReturn: Int...) -> SubscriptStub {
+        public static func `subscript`<T>(with generic: Parameter<T>, willReturn: Int...) -> SubscriptStub {
             return Given(method: .subscript_get_with_generic_2(`generic`.wrapAsGeneric()), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func `subscript`<T>(_ i: Parameter<Int>, _ type: Parameter<T.Type>, willReturn: T...) -> SubscriptStub {
@@ -7258,8 +8524,8 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
         public static func `subscript`(label name: Parameter<String>) -> Verify { return Verify(method: .subscript_get_label_name(`name`))}
         public static func `subscript`<T: Sequence>(with generic: Parameter<T>) -> Verify { return Verify(method: .subscript_get_with_generic_1(`generic`.wrapAsGeneric()))}
         public static func `subscript`<T: Sequence>(with generic: Parameter<T>, set newValue: Parameter<Bool>) -> Verify { return Verify(method: .subscript_set_with_generic_1(`generic`.wrapAsGeneric(), newValue))}
-        public static func `subscript`<T: FloatingPoint>(with generic: Parameter<T>) -> Verify { return Verify(method: .subscript_get_with_generic_2(`generic`.wrapAsGeneric()))}
-        public static func `subscript`<T: FloatingPoint>(with generic: Parameter<T>, set newValue: Parameter<Int>) -> Verify { return Verify(method: .subscript_set_with_generic_2(`generic`.wrapAsGeneric(), newValue))}
+        public static func `subscript`<T>(with generic: Parameter<T>) -> Verify { return Verify(method: .subscript_get_with_generic_2(`generic`.wrapAsGeneric()))}
+        public static func `subscript`<T>(with generic: Parameter<T>, set newValue: Parameter<Int>) -> Verify { return Verify(method: .subscript_set_with_generic_2(`generic`.wrapAsGeneric(), newValue))}
         public static func `subscript`<T>(_ i: Parameter<Int>, _ type: Parameter<T.Type>) -> Verify { return Verify(method: .subscript_get_i_type(`i`, `type`.wrapAsGeneric()))}
         public static func `subscript`<T>(_ i: Parameter<Int>, _ type: Parameter<T.Type>, set newValue: Parameter<T>) -> Verify { return Verify(method: .subscript_set_i_type(`i`, `type`.wrapAsGeneric(), newValue.wrapAsGeneric()))}
         public static func `subscript`(closure c: Parameter<(Int) -> Void>) -> Verify { return Verify(method: .subscript_get_closure_c(`c`))}
@@ -7290,7 +8556,7 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -7328,14 +8594,13 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - ProtocolWithThrowingMethods
+
 open class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -7362,6 +8627,14 @@ open class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -7417,6 +8690,12 @@ open class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
             switch self {
             case .m_methodThatThrows: return 0
             case let .m_methodThatReturnsAndThrows__param_param(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_methodThatThrows: return ".methodThatThrows()"
+            case .m_methodThatReturnsAndThrows__param_param: return ".methodThatReturnsAndThrows(param:)"
             }
         }
     }
@@ -7485,7 +8764,7 @@ open class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -7523,14 +8802,13 @@ open class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - ProtocolWithTuples
+
 open class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -7557,6 +8835,14 @@ open class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -7592,6 +8878,11 @@ open class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
         func intValue() -> Int {
             switch self {
             case let .m_methodThatTakesTuple__tuple_tuple(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_methodThatTakesTuple__tuple_tuple: return ".methodThatTakesTuple(tuple:)"
             }
         }
     }
@@ -7643,7 +8934,7 @@ open class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -7681,14 +8972,13 @@ open class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - ProtocolWithWhereAfterDefinition
+
 open class ProtocolWithWhereAfterDefinitionMock<T>: ProtocolWithWhereAfterDefinition, Mock where T: Sequence, T.Element: Equatable {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -7717,10 +9007,16 @@ open class ProtocolWithWhereAfterDefinitionMock<T>: ProtocolWithWhereAfterDefini
         self.line = line
     }
 
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
     public var sequence: T {
 		get {	invocations.append(.p_sequence_get); return __p_sequence ?? givenGetterValue(.p_sequence_get, "ProtocolWithWhereAfterDefinitionMock - stub value for sequence was not defined") }
-		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
-		set {	__p_sequence = newValue }
 	}
 	private var __p_sequence: (T)?
 
@@ -7761,6 +9057,12 @@ open class ProtocolWithWhereAfterDefinitionMock<T>: ProtocolWithWhereAfterDefini
             switch self {
             case let .m_methodWithType__t_t(p0): return p0.intValue
             case .p_sequence_get: return 0
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_methodWithType__t_t: return ".methodWithType(t:)"
+            case .p_sequence_get: return "[get] .sequence"
             }
         }
     }
@@ -7816,7 +9118,7 @@ open class ProtocolWithWhereAfterDefinitionMock<T>: ProtocolWithWhereAfterDefini
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -7854,14 +9156,13 @@ open class ProtocolWithWhereAfterDefinitionMock<T>: ProtocolWithWhereAfterDefini
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - SampleServiceType
+
 open class SampleServiceTypeMock: SampleServiceType, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -7888,6 +9189,14 @@ open class SampleServiceTypeMock: SampleServiceType, Mock {
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -8050,6 +9359,18 @@ open class SampleServiceTypeMock: SampleServiceType, Mock {
             case let .m_methodWithClosures__success_function_2(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_serviceName: return ".serviceName()"
+            case .m_getPoint__from_point: return ".getPoint(from:)"
+            case .m_getPoint__from_tuple: return ".getPoint(from:)"
+            case .m_similarMethodThatDiffersOnType__value_1: return ".similarMethodThatDiffersOnType(_:)"
+            case .m_similarMethodThatDiffersOnType__value_2: return ".similarMethodThatDiffersOnType(_:)"
+            case .m_methodWithTypedef__scalar: return ".methodWithTypedef(_:)"
+            case .m_methodWithClosures__success_function_1: return ".methodWithClosures(success:)"
+            case .m_methodWithClosures__success_function_2: return ".methodWithClosures(success:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -8187,7 +9508,7 @@ open class SampleServiceTypeMock: SampleServiceType, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -8225,14 +9546,13 @@ open class SampleServiceTypeMock: SampleServiceType, Mock {
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - SelfConstrainedProtocol
+
 open class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -8260,6 +9580,14 @@ open class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMoc
         self.file = file
         self.line = line
     }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
     static var matcher: Matcher = Matcher.default
     static var stubbingPolicy: StubbingPolicy = .wrap
     static var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
@@ -8268,10 +9596,13 @@ open class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMoc
     static private var methodPerformValues: [StaticPerform] = []
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
-    public static func clear() {
-        invocations = []
-        methodReturnValues = []
-        methodPerformValues = []
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public static func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -8377,6 +9708,12 @@ open class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMoc
                 case let .sm_construct__param_value(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .sm_construct__param_value: return ".construct(param:)"
+
+            }
+        }
     }
 
     open class StaticGiven: StubbedMethod {
@@ -8447,6 +9784,14 @@ open class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMoc
             case let .m_compare__with_other(p0): return p0.intValue
             case let .m_genericMethodWithNestedSelf__param_paramsecond_secondother_other(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case let .m_configure__with_secret(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_methodReturningSelf: return ".methodReturningSelf()"
+            case .m_compare__with_other: return ".compare(with:)"
+            case .m_genericMethodWithNestedSelf__param_paramsecond_secondother_other: return ".genericMethodWithNestedSelf(param:second:other:)"
+            case .m_configure__with_secret: return ".configure(with:)"
             }
         }
     }
@@ -8543,7 +9888,7 @@ open class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMoc
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -8581,10 +9926,8 @@ open class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMoc
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 
     static public func given(_ method: StaticGiven) {
@@ -8637,6 +9980,7 @@ open class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMoc
 }
 
 // MARK: - ShouldAllowNoStubDefined
+
 open class ShouldAllowNoStubDefinedMock: ShouldAllowNoStubDefined, Mock, StaticMock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -8664,6 +10008,14 @@ open class ShouldAllowNoStubDefinedMock: ShouldAllowNoStubDefined, Mock, StaticM
         self.file = file
         self.line = line
     }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
     static var matcher: Matcher = Matcher.default
     static var stubbingPolicy: StubbingPolicy = .wrap
     static var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
@@ -8672,24 +10024,23 @@ open class ShouldAllowNoStubDefinedMock: ShouldAllowNoStubDefined, Mock, StaticM
     static private var methodPerformValues: [StaticPerform] = []
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
-    public static func clear() {
-        invocations = []
-        methodReturnValues = []
-        methodPerformValues = []
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public static func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
     public var property: Int? {
 		get {	invocations.append(.p_property_get); return __p_property ?? optionalGivenGetterValue(.p_property_get, "ShouldAllowNoStubDefinedMock - stub value for property was not defined") }
-		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
-		set {	__p_property = newValue }
 	}
 	private var __p_property: (Int)?
 
 
     public static var property: Int? {
 		get {	ShouldAllowNoStubDefinedMock.invocations.append(.p_property_get); return ShouldAllowNoStubDefinedMock.__p_property ?? optionalGivenGetterValue(.p_property_get, "ShouldAllowNoStubDefinedMock - stub value for property was not defined") }
-		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
-		set {	ShouldAllowNoStubDefinedMock.__p_property = newValue }
 	}
 	private static var __p_property: (Int)?
 
@@ -8832,6 +10183,16 @@ open class ShouldAllowNoStubDefinedMock: ShouldAllowNoStubDefined, Mock, StaticM
                 case .p_property_get: return 0
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .sm_voidMethod__key: return ".voidMethod(_:)"
+            case .sm_throwingVoidMethod__key: return ".throwingVoidMethod(_:)"
+            case .sm_optionalMethod__key: return ".optionalMethod(_:)"
+            case .sm_optionalThrowingMethod__key: return ".optionalThrowingMethod(_:)"
+            case .p_property_get: return "[get] .property"
+
+            }
+        }
     }
 
     open class StaticGiven: StubbedMethod {
@@ -8947,6 +10308,16 @@ open class ShouldAllowNoStubDefinedMock: ShouldAllowNoStubDefined, Mock, StaticM
             case let .subscript_get_x(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_voidMethod__key: return ".voidMethod(_:)"
+            case .m_throwingVoidMethod__key: return ".throwingVoidMethod(_:)"
+            case .m_optionalMethod__key: return ".optionalMethod(_:)"
+            case .m_optionalThrowingMethod__key: return ".optionalThrowingMethod(_:)"
+            case .p_property_get: return "[get] .property"
+            case .subscript_get_x: return "[get] `subscript`[_ x]"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -9036,7 +10407,7 @@ open class ShouldAllowNoStubDefinedMock: ShouldAllowNoStubDefined, Mock, StaticM
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -9074,10 +10445,8 @@ open class ShouldAllowNoStubDefinedMock: ShouldAllowNoStubDefined, Mock, StaticM
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 
     static public func given(_ method: StaticGiven) {
@@ -9130,6 +10499,7 @@ open class ShouldAllowNoStubDefinedMock: ShouldAllowNoStubDefined, Mock, StaticM
 }
 
 // MARK: - SimpleProtocolThatInheritsOtherProtocols
+
 open class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOtherProtocols, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -9158,6 +10528,14 @@ open class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInher
         self.line = line
     }
 
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
     public var property: String {
 		get {	invocations.append(.p_property_get); return __p_property ?? givenGetterValue(.p_property_get, "SimpleProtocolThatInheritsOtherProtocolsMock - stub value for property was not defined") }
 		set {	invocations.append(.p_property_set(.value(newValue))); __p_property = newValue }
@@ -9172,8 +10550,6 @@ open class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInher
 
     public var propertyGetOnly: String {
 		get {	invocations.append(.p_propertyGetOnly_get); return __p_propertyGetOnly ?? givenGetterValue(.p_propertyGetOnly_get, "SimpleProtocolThatInheritsOtherProtocolsMock - stub value for propertyGetOnly was not defined") }
-		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
-		set {	__p_propertyGetOnly = newValue }
 	}
 	private var __p_propertyGetOnly: (String)?
 
@@ -9298,6 +10674,23 @@ open class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInher
 			case .p_propertyImplicit_set(let newValue): return newValue.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_simpleMethod: return ".simpleMethod()"
+            case .m_simpleMehtodThatReturns: return ".simpleMehtodThatReturns()"
+            case .m_simpleMehtodThatReturns__param_param: return ".simpleMehtodThatReturns(param:)"
+            case .m_simpleMehtodThatReturns__optionalParam_optionalParam: return ".simpleMehtodThatReturns(optionalParam:)"
+            case .p_property_get: return "[get] .property"
+			case .p_property_set: return "[set] .property"
+            case .p_weakProperty_get: return "[get] .weakProperty"
+			case .p_weakProperty_set: return "[set] .weakProperty"
+            case .p_propertyGetOnly_get: return "[get] .propertyGetOnly"
+            case .p_propertyOptional_get: return "[get] .propertyOptional"
+			case .p_propertyOptional_set: return "[set] .propertyOptional"
+            case .p_propertyImplicit_get: return "[get] .propertyImplicit"
+			case .p_propertyImplicit_set: return "[set] .propertyImplicit"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -9403,7 +10796,7 @@ open class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInher
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -9441,14 +10834,13 @@ open class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInher
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - SimpleProtocolUsingCollections
+
 open class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -9475,6 +10867,14 @@ open class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, M
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -9570,6 +10970,14 @@ open class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, M
             case let .m_verify__set_set(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_getArray: return ".getArray()"
+            case .m_map__array_arrayparam_param: return ".map(array:param:)"
+            case .m_use__dictionary_dictionary: return ".use(dictionary:)"
+            case .m_verify__set_set: return ".verify(set:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -9661,7 +11069,7 @@ open class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, M
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -9699,14 +11107,13 @@ open class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, M
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - SimpleProtocolWithBothMethodsAndProperties
+
 open class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMethodsAndProperties, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -9735,10 +11142,16 @@ open class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBot
         self.line = line
     }
 
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
     public var property: String {
 		get {	invocations.append(.p_property_get); return __p_property ?? givenGetterValue(.p_property_get, "SimpleProtocolWithBothMethodsAndPropertiesMock - stub value for property was not defined") }
-		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
-		set {	__p_property = newValue }
 	}
 	private var __p_property: (String)?
 
@@ -9778,6 +11191,12 @@ open class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBot
             switch self {
             case .m_simpleMethod: return 0
             case .p_property_get: return 0
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_simpleMethod: return ".simpleMethod()"
+            case .p_property_get: return "[get] .property"
             }
         }
     }
@@ -9833,7 +11252,7 @@ open class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBot
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -9871,14 +11290,13 @@ open class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBot
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - SimpleProtocolWithMethods
+
 open class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -9905,6 +11323,14 @@ open class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -9989,6 +11415,14 @@ open class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
             case let .m_simpleMehtodThatReturns__optionalParam_optionalParam(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_simpleMethod: return ".simpleMethod()"
+            case .m_simpleMehtodThatReturns: return ".simpleMehtodThatReturns()"
+            case .m_simpleMehtodThatReturns__param_param: return ".simpleMehtodThatReturns(param:)"
+            case .m_simpleMehtodThatReturns__optionalParam_optionalParam: return ".simpleMehtodThatReturns(optionalParam:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -10070,7 +11504,7 @@ open class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -10108,14 +11542,13 @@ open class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - SimpleProtocolWithProperties
+
 open class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -10144,6 +11577,14 @@ open class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock 
         self.line = line
     }
 
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
     public var property: String {
 		get {	invocations.append(.p_property_get); return __p_property ?? givenGetterValue(.p_property_get, "SimpleProtocolWithPropertiesMock - stub value for property was not defined") }
 		set {	invocations.append(.p_property_set(.value(newValue))); __p_property = newValue }
@@ -10158,8 +11599,6 @@ open class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock 
 
     public var propertyGetOnly: String {
 		get {	invocations.append(.p_propertyGetOnly_get); return __p_propertyGetOnly ?? givenGetterValue(.p_propertyGetOnly_get, "SimpleProtocolWithPropertiesMock - stub value for propertyGetOnly was not defined") }
-		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
-		set {	__p_propertyGetOnly = newValue }
 	}
 	private var __p_propertyGetOnly: (String)?
 
@@ -10217,6 +11656,19 @@ open class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock 
 			case .p_propertyOptional_set(let newValue): return newValue.intValue
             case .p_propertyImplicit_get: return 0
 			case .p_propertyImplicit_set(let newValue): return newValue.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .p_property_get: return "[get] .property"
+			case .p_property_set: return "[set] .property"
+            case .p_weakProperty_get: return "[get] .weakProperty"
+			case .p_weakProperty_set: return "[set] .weakProperty"
+            case .p_propertyGetOnly_get: return "[get] .propertyGetOnly"
+            case .p_propertyOptional_get: return "[get] .propertyOptional"
+			case .p_propertyOptional_set: return "[set] .propertyOptional"
+            case .p_propertyImplicit_get: return "[get] .propertyImplicit"
+			case .p_propertyImplicit_set: return "[set] .propertyImplicit"
             }
         }
     }
@@ -10278,7 +11730,7 @@ open class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock 
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -10316,14 +11768,1027 @@ open class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock 
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
+    }
+}
+
+// MARK: - SuggestionProtocol
+
+open class SuggestionProtocolMock: SuggestionProtocol, Mock {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
+
+
+
+
+
+    fileprivate struct MethodType {
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
+        func intValue() -> Int { return 0 }
+        func assertionName() -> String { return "" }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+    }
+}
+
+// MARK: - SuggestionRepository
+
+open class SuggestionRepositoryMock: SuggestionRepository, Mock {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+    public typealias Entity = Suggestion
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
+
+
+
+
+    open func save(entity: Entity) -> Bool {
+        addInvocation(.m_save__entity_entity(Parameter<Entity>.value(`entity`)))
+		let perform = methodPerformValue(.m_save__entity_entity(Parameter<Entity>.value(`entity`))) as? (Entity) -> Void
+		perform?(`entity`)
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_save__entity_entity(Parameter<Entity>.value(`entity`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for save(entity: Entity). Use given")
+			Failure("Stub return value not specified for save(entity: Entity). Use given")
+		}
+		return __value
+    }
+
+    open func save(entities: [Entity]) -> Bool {
+        addInvocation(.m_save__entities_entities(Parameter<[Entity]>.value(`entities`)))
+		let perform = methodPerformValue(.m_save__entities_entities(Parameter<[Entity]>.value(`entities`))) as? ([Entity]) -> Void
+		perform?(`entities`)
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_save__entities_entities(Parameter<[Entity]>.value(`entities`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for save(entities: [Entity]). Use given")
+			Failure("Stub return value not specified for save(entities: [Entity]). Use given")
+		}
+		return __value
+    }
+
+    open func find(    where predicate: NSPredicate,    sortedBy sortDescriptors: [NSSortDescriptor]) -> [Entity] {
+        addInvocation(.m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>.value(`predicate`), Parameter<[NSSortDescriptor]>.value(`sortDescriptors`)))
+		let perform = methodPerformValue(.m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>.value(`predicate`), Parameter<[NSSortDescriptor]>.value(`sortDescriptors`))) as? (NSPredicate, [NSSortDescriptor]) -> Void
+		perform?(`predicate`, `sortDescriptors`)
+		var __value: [Entity]
+		do {
+		    __value = try methodReturnValue(.m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>.value(`predicate`), Parameter<[NSSortDescriptor]>.value(`sortDescriptors`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for find(    where predicate: NSPredicate,    sortedBy sortDescriptors: [NSSortDescriptor]). Use given")
+			Failure("Stub return value not specified for find(    where predicate: NSPredicate,    sortedBy sortDescriptors: [NSSortDescriptor]). Use given")
+		}
+		return __value
+    }
+
+    open func findOne(where predicate: NSPredicate) -> Entity {
+        addInvocation(.m_findOne__where_predicate(Parameter<NSPredicate>.value(`predicate`)))
+		let perform = methodPerformValue(.m_findOne__where_predicate(Parameter<NSPredicate>.value(`predicate`))) as? (NSPredicate) -> Void
+		perform?(`predicate`)
+		var __value: Entity
+		do {
+		    __value = try methodReturnValue(.m_findOne__where_predicate(Parameter<NSPredicate>.value(`predicate`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for findOne(where predicate: NSPredicate). Use given")
+			Failure("Stub return value not specified for findOne(where predicate: NSPredicate). Use given")
+		}
+		return __value
+    }
+
+    open func delete(entity: Entity) -> Bool {
+        addInvocation(.m_delete__entity_entity(Parameter<Entity>.value(`entity`)))
+		let perform = methodPerformValue(.m_delete__entity_entity(Parameter<Entity>.value(`entity`))) as? (Entity) -> Void
+		perform?(`entity`)
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_delete__entity_entity(Parameter<Entity>.value(`entity`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for delete(entity: Entity). Use given")
+			Failure("Stub return value not specified for delete(entity: Entity). Use given")
+		}
+		return __value
+    }
+
+    open func delete(entities: [Entity]) -> Bool {
+        addInvocation(.m_delete__entities_entities(Parameter<[Entity]>.value(`entities`)))
+		let perform = methodPerformValue(.m_delete__entities_entities(Parameter<[Entity]>.value(`entities`))) as? ([Entity]) -> Void
+		perform?(`entities`)
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_delete__entities_entities(Parameter<[Entity]>.value(`entities`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for delete(entities: [Entity]). Use given")
+			Failure("Stub return value not specified for delete(entities: [Entity]). Use given")
+		}
+		return __value
+    }
+
+
+    fileprivate enum MethodType {
+        case m_save__entity_entity(Parameter<Entity>)
+        case m_save__entities_entities(Parameter<[Entity]>)
+        case m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>, Parameter<[NSSortDescriptor]>)
+        case m_findOne__where_predicate(Parameter<NSPredicate>)
+        case m_delete__entity_entity(Parameter<Entity>)
+        case m_delete__entities_entities(Parameter<[Entity]>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+            case (.m_save__entity_entity(let lhsEntity), .m_save__entity_entity(let rhsEntity)):
+                guard Parameter.compare(lhs: lhsEntity, rhs: rhsEntity, with: matcher) else { return false } 
+                return true 
+            case (.m_save__entities_entities(let lhsEntities), .m_save__entities_entities(let rhsEntities)):
+                guard Parameter.compare(lhs: lhsEntities, rhs: rhsEntities, with: matcher) else { return false } 
+                return true 
+            case (.m_find__where_predicatesortedBy_sortDescriptors(let lhsPredicate, let lhsSortdescriptors), .m_find__where_predicatesortedBy_sortDescriptors(let rhsPredicate, let rhsSortdescriptors)):
+                guard Parameter.compare(lhs: lhsPredicate, rhs: rhsPredicate, with: matcher) else { return false } 
+                guard Parameter.compare(lhs: lhsSortdescriptors, rhs: rhsSortdescriptors, with: matcher) else { return false } 
+                return true 
+            case (.m_findOne__where_predicate(let lhsPredicate), .m_findOne__where_predicate(let rhsPredicate)):
+                guard Parameter.compare(lhs: lhsPredicate, rhs: rhsPredicate, with: matcher) else { return false } 
+                return true 
+            case (.m_delete__entity_entity(let lhsEntity), .m_delete__entity_entity(let rhsEntity)):
+                guard Parameter.compare(lhs: lhsEntity, rhs: rhsEntity, with: matcher) else { return false } 
+                return true 
+            case (.m_delete__entities_entities(let lhsEntities), .m_delete__entities_entities(let rhsEntities)):
+                guard Parameter.compare(lhs: lhsEntities, rhs: rhsEntities, with: matcher) else { return false } 
+                return true 
+            default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case let .m_save__entity_entity(p0): return p0.intValue
+            case let .m_save__entities_entities(p0): return p0.intValue
+            case let .m_find__where_predicatesortedBy_sortDescriptors(p0, p1): return p0.intValue + p1.intValue
+            case let .m_findOne__where_predicate(p0): return p0.intValue
+            case let .m_delete__entity_entity(p0): return p0.intValue
+            case let .m_delete__entities_entities(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_save__entity_entity: return ".save(entity:)"
+            case .m_save__entities_entities: return ".save(entities:)"
+            case .m_find__where_predicatesortedBy_sortDescriptors: return ".find(where:sortedBy:)"
+            case .m_findOne__where_predicate: return ".findOne(where:)"
+            case .m_delete__entity_entity: return ".delete(entity:)"
+            case .m_delete__entities_entities: return ".delete(entities:)"
+            }
+        }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+        public static func save(entity: Parameter<Entity>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_save__entity_entity(`entity`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func save(entities: Parameter<[Entity]>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_save__entities_entities(`entities`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func find(where predicate: Parameter<NSPredicate>, sortedBy sortDescriptors: Parameter<[NSSortDescriptor]>, willReturn: [Entity]...) -> MethodStub {
+            return Given(method: .m_find__where_predicatesortedBy_sortDescriptors(`predicate`, `sortDescriptors`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func findOne(where predicate: Parameter<NSPredicate>, willReturn: Entity...) -> MethodStub {
+            return Given(method: .m_findOne__where_predicate(`predicate`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func delete(entity: Parameter<Entity>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_delete__entity_entity(`entity`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func delete(entities: Parameter<[Entity]>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_delete__entities_entities(`entities`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func save(entity: Parameter<Entity>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+            let willReturn: [Bool] = []
+			let given: Given = { return Given(method: .m_save__entity_entity(`entity`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Bool).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func save(entities: Parameter<[Entity]>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+            let willReturn: [Bool] = []
+			let given: Given = { return Given(method: .m_save__entities_entities(`entities`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Bool).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func find(where predicate: Parameter<NSPredicate>, sortedBy sortDescriptors: Parameter<[NSSortDescriptor]>, willProduce: (Stubber<[Entity]>) -> Void) -> MethodStub {
+            let willReturn: [[Entity]] = []
+			let given: Given = { return Given(method: .m_find__where_predicatesortedBy_sortDescriptors(`predicate`, `sortDescriptors`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: ([Entity]).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func findOne(where predicate: Parameter<NSPredicate>, willProduce: (Stubber<Entity>) -> Void) -> MethodStub {
+            let willReturn: [Entity] = []
+			let given: Given = { return Given(method: .m_findOne__where_predicate(`predicate`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Entity).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func delete(entity: Parameter<Entity>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+            let willReturn: [Bool] = []
+			let given: Given = { return Given(method: .m_delete__entity_entity(`entity`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Bool).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func delete(entities: Parameter<[Entity]>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+            let willReturn: [Bool] = []
+			let given: Given = { return Given(method: .m_delete__entities_entities(`entities`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Bool).self)
+			willProduce(stubber)
+			return given
+        }
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        public static func save(entity: Parameter<Entity>) -> Verify { return Verify(method: .m_save__entity_entity(`entity`))}
+        public static func save(entities: Parameter<[Entity]>) -> Verify { return Verify(method: .m_save__entities_entities(`entities`))}
+        public static func find(where predicate: Parameter<NSPredicate>, sortedBy sortDescriptors: Parameter<[NSSortDescriptor]>) -> Verify { return Verify(method: .m_find__where_predicatesortedBy_sortDescriptors(`predicate`, `sortDescriptors`))}
+        public static func findOne(where predicate: Parameter<NSPredicate>) -> Verify { return Verify(method: .m_findOne__where_predicate(`predicate`))}
+        public static func delete(entity: Parameter<Entity>) -> Verify { return Verify(method: .m_delete__entity_entity(`entity`))}
+        public static func delete(entities: Parameter<[Entity]>) -> Verify { return Verify(method: .m_delete__entities_entities(`entities`))}
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        public static func save(entity: Parameter<Entity>, perform: @escaping (Entity) -> Void) -> Perform {
+            return Perform(method: .m_save__entity_entity(`entity`), performs: perform)
+        }
+        public static func save(entities: Parameter<[Entity]>, perform: @escaping ([Entity]) -> Void) -> Perform {
+            return Perform(method: .m_save__entities_entities(`entities`), performs: perform)
+        }
+        public static func find(where predicate: Parameter<NSPredicate>, sortedBy sortDescriptors: Parameter<[NSSortDescriptor]>, perform: @escaping (NSPredicate, [NSSortDescriptor]) -> Void) -> Perform {
+            return Perform(method: .m_find__where_predicatesortedBy_sortDescriptors(`predicate`, `sortDescriptors`), performs: perform)
+        }
+        public static func findOne(where predicate: Parameter<NSPredicate>, perform: @escaping (NSPredicate) -> Void) -> Perform {
+            return Perform(method: .m_findOne__where_predicate(`predicate`), performs: perform)
+        }
+        public static func delete(entity: Parameter<Entity>, perform: @escaping (Entity) -> Void) -> Perform {
+            return Perform(method: .m_delete__entity_entity(`entity`), performs: perform)
+        }
+        public static func delete(entities: Parameter<[Entity]>, perform: @escaping ([Entity]) -> Void) -> Perform {
+            return Perform(method: .m_delete__entities_entities(`entities`), performs: perform)
+        }
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+    }
+}
+
+// MARK: - SuggestionRepositoryConstrainedToProtocol
+
+open class SuggestionRepositoryConstrainedToProtocolMock<Entity>: SuggestionRepositoryConstrainedToProtocol, Mock where Entity: SuggestionProtocol {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
+
+
+
+
+    open func save(entity: Entity) -> Bool {
+        addInvocation(.m_save__entity_entity(Parameter<Entity>.value(`entity`)))
+		let perform = methodPerformValue(.m_save__entity_entity(Parameter<Entity>.value(`entity`))) as? (Entity) -> Void
+		perform?(`entity`)
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_save__entity_entity(Parameter<Entity>.value(`entity`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for save(entity: Entity). Use given")
+			Failure("Stub return value not specified for save(entity: Entity). Use given")
+		}
+		return __value
+    }
+
+    open func save(entities: [Entity]) -> Bool {
+        addInvocation(.m_save__entities_entities(Parameter<[Entity]>.value(`entities`)))
+		let perform = methodPerformValue(.m_save__entities_entities(Parameter<[Entity]>.value(`entities`))) as? ([Entity]) -> Void
+		perform?(`entities`)
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_save__entities_entities(Parameter<[Entity]>.value(`entities`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for save(entities: [Entity]). Use given")
+			Failure("Stub return value not specified for save(entities: [Entity]). Use given")
+		}
+		return __value
+    }
+
+    open func find(    where predicate: NSPredicate,    sortedBy sortDescriptors: [NSSortDescriptor]) -> [Entity] {
+        addInvocation(.m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>.value(`predicate`), Parameter<[NSSortDescriptor]>.value(`sortDescriptors`)))
+		let perform = methodPerformValue(.m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>.value(`predicate`), Parameter<[NSSortDescriptor]>.value(`sortDescriptors`))) as? (NSPredicate, [NSSortDescriptor]) -> Void
+		perform?(`predicate`, `sortDescriptors`)
+		var __value: [Entity]
+		do {
+		    __value = try methodReturnValue(.m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>.value(`predicate`), Parameter<[NSSortDescriptor]>.value(`sortDescriptors`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for find(    where predicate: NSPredicate,    sortedBy sortDescriptors: [NSSortDescriptor]). Use given")
+			Failure("Stub return value not specified for find(    where predicate: NSPredicate,    sortedBy sortDescriptors: [NSSortDescriptor]). Use given")
+		}
+		return __value
+    }
+
+    open func findOne(where predicate: NSPredicate) -> Entity {
+        addInvocation(.m_findOne__where_predicate(Parameter<NSPredicate>.value(`predicate`)))
+		let perform = methodPerformValue(.m_findOne__where_predicate(Parameter<NSPredicate>.value(`predicate`))) as? (NSPredicate) -> Void
+		perform?(`predicate`)
+		var __value: Entity
+		do {
+		    __value = try methodReturnValue(.m_findOne__where_predicate(Parameter<NSPredicate>.value(`predicate`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for findOne(where predicate: NSPredicate). Use given")
+			Failure("Stub return value not specified for findOne(where predicate: NSPredicate). Use given")
+		}
+		return __value
+    }
+
+    open func delete(entity: Entity) -> Bool {
+        addInvocation(.m_delete__entity_entity(Parameter<Entity>.value(`entity`)))
+		let perform = methodPerformValue(.m_delete__entity_entity(Parameter<Entity>.value(`entity`))) as? (Entity) -> Void
+		perform?(`entity`)
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_delete__entity_entity(Parameter<Entity>.value(`entity`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for delete(entity: Entity). Use given")
+			Failure("Stub return value not specified for delete(entity: Entity). Use given")
+		}
+		return __value
+    }
+
+    open func delete(entities: [Entity]) -> Bool {
+        addInvocation(.m_delete__entities_entities(Parameter<[Entity]>.value(`entities`)))
+		let perform = methodPerformValue(.m_delete__entities_entities(Parameter<[Entity]>.value(`entities`))) as? ([Entity]) -> Void
+		perform?(`entities`)
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_delete__entities_entities(Parameter<[Entity]>.value(`entities`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for delete(entities: [Entity]). Use given")
+			Failure("Stub return value not specified for delete(entities: [Entity]). Use given")
+		}
+		return __value
+    }
+
+
+    fileprivate enum MethodType {
+        case m_save__entity_entity(Parameter<Entity>)
+        case m_save__entities_entities(Parameter<[Entity]>)
+        case m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>, Parameter<[NSSortDescriptor]>)
+        case m_findOne__where_predicate(Parameter<NSPredicate>)
+        case m_delete__entity_entity(Parameter<Entity>)
+        case m_delete__entities_entities(Parameter<[Entity]>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+            case (.m_save__entity_entity(let lhsEntity), .m_save__entity_entity(let rhsEntity)):
+                guard Parameter.compare(lhs: lhsEntity, rhs: rhsEntity, with: matcher) else { return false } 
+                return true 
+            case (.m_save__entities_entities(let lhsEntities), .m_save__entities_entities(let rhsEntities)):
+                guard Parameter.compare(lhs: lhsEntities, rhs: rhsEntities, with: matcher) else { return false } 
+                return true 
+            case (.m_find__where_predicatesortedBy_sortDescriptors(let lhsPredicate, let lhsSortdescriptors), .m_find__where_predicatesortedBy_sortDescriptors(let rhsPredicate, let rhsSortdescriptors)):
+                guard Parameter.compare(lhs: lhsPredicate, rhs: rhsPredicate, with: matcher) else { return false } 
+                guard Parameter.compare(lhs: lhsSortdescriptors, rhs: rhsSortdescriptors, with: matcher) else { return false } 
+                return true 
+            case (.m_findOne__where_predicate(let lhsPredicate), .m_findOne__where_predicate(let rhsPredicate)):
+                guard Parameter.compare(lhs: lhsPredicate, rhs: rhsPredicate, with: matcher) else { return false } 
+                return true 
+            case (.m_delete__entity_entity(let lhsEntity), .m_delete__entity_entity(let rhsEntity)):
+                guard Parameter.compare(lhs: lhsEntity, rhs: rhsEntity, with: matcher) else { return false } 
+                return true 
+            case (.m_delete__entities_entities(let lhsEntities), .m_delete__entities_entities(let rhsEntities)):
+                guard Parameter.compare(lhs: lhsEntities, rhs: rhsEntities, with: matcher) else { return false } 
+                return true 
+            default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case let .m_save__entity_entity(p0): return p0.intValue
+            case let .m_save__entities_entities(p0): return p0.intValue
+            case let .m_find__where_predicatesortedBy_sortDescriptors(p0, p1): return p0.intValue + p1.intValue
+            case let .m_findOne__where_predicate(p0): return p0.intValue
+            case let .m_delete__entity_entity(p0): return p0.intValue
+            case let .m_delete__entities_entities(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_save__entity_entity: return ".save(entity:)"
+            case .m_save__entities_entities: return ".save(entities:)"
+            case .m_find__where_predicatesortedBy_sortDescriptors: return ".find(where:sortedBy:)"
+            case .m_findOne__where_predicate: return ".findOne(where:)"
+            case .m_delete__entity_entity: return ".delete(entity:)"
+            case .m_delete__entities_entities: return ".delete(entities:)"
+            }
+        }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+        public static func save(entity: Parameter<Entity>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_save__entity_entity(`entity`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func save(entities: Parameter<[Entity]>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_save__entities_entities(`entities`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func find(where predicate: Parameter<NSPredicate>, sortedBy sortDescriptors: Parameter<[NSSortDescriptor]>, willReturn: [Entity]...) -> MethodStub {
+            return Given(method: .m_find__where_predicatesortedBy_sortDescriptors(`predicate`, `sortDescriptors`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func findOne(where predicate: Parameter<NSPredicate>, willReturn: Entity...) -> MethodStub {
+            return Given(method: .m_findOne__where_predicate(`predicate`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func delete(entity: Parameter<Entity>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_delete__entity_entity(`entity`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func delete(entities: Parameter<[Entity]>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_delete__entities_entities(`entities`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func save(entity: Parameter<Entity>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+            let willReturn: [Bool] = []
+			let given: Given = { return Given(method: .m_save__entity_entity(`entity`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Bool).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func save(entities: Parameter<[Entity]>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+            let willReturn: [Bool] = []
+			let given: Given = { return Given(method: .m_save__entities_entities(`entities`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Bool).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func find(where predicate: Parameter<NSPredicate>, sortedBy sortDescriptors: Parameter<[NSSortDescriptor]>, willProduce: (Stubber<[Entity]>) -> Void) -> MethodStub {
+            let willReturn: [[Entity]] = []
+			let given: Given = { return Given(method: .m_find__where_predicatesortedBy_sortDescriptors(`predicate`, `sortDescriptors`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: ([Entity]).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func findOne(where predicate: Parameter<NSPredicate>, willProduce: (Stubber<Entity>) -> Void) -> MethodStub {
+            let willReturn: [Entity] = []
+			let given: Given = { return Given(method: .m_findOne__where_predicate(`predicate`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Entity).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func delete(entity: Parameter<Entity>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+            let willReturn: [Bool] = []
+			let given: Given = { return Given(method: .m_delete__entity_entity(`entity`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Bool).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func delete(entities: Parameter<[Entity]>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+            let willReturn: [Bool] = []
+			let given: Given = { return Given(method: .m_delete__entities_entities(`entities`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Bool).self)
+			willProduce(stubber)
+			return given
+        }
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        public static func save(entity: Parameter<Entity>) -> Verify { return Verify(method: .m_save__entity_entity(`entity`))}
+        public static func save(entities: Parameter<[Entity]>) -> Verify { return Verify(method: .m_save__entities_entities(`entities`))}
+        public static func find(where predicate: Parameter<NSPredicate>, sortedBy sortDescriptors: Parameter<[NSSortDescriptor]>) -> Verify { return Verify(method: .m_find__where_predicatesortedBy_sortDescriptors(`predicate`, `sortDescriptors`))}
+        public static func findOne(where predicate: Parameter<NSPredicate>) -> Verify { return Verify(method: .m_findOne__where_predicate(`predicate`))}
+        public static func delete(entity: Parameter<Entity>) -> Verify { return Verify(method: .m_delete__entity_entity(`entity`))}
+        public static func delete(entities: Parameter<[Entity]>) -> Verify { return Verify(method: .m_delete__entities_entities(`entities`))}
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        public static func save(entity: Parameter<Entity>, perform: @escaping (Entity) -> Void) -> Perform {
+            return Perform(method: .m_save__entity_entity(`entity`), performs: perform)
+        }
+        public static func save(entities: Parameter<[Entity]>, perform: @escaping ([Entity]) -> Void) -> Perform {
+            return Perform(method: .m_save__entities_entities(`entities`), performs: perform)
+        }
+        public static func find(where predicate: Parameter<NSPredicate>, sortedBy sortDescriptors: Parameter<[NSSortDescriptor]>, perform: @escaping (NSPredicate, [NSSortDescriptor]) -> Void) -> Perform {
+            return Perform(method: .m_find__where_predicatesortedBy_sortDescriptors(`predicate`, `sortDescriptors`), performs: perform)
+        }
+        public static func findOne(where predicate: Parameter<NSPredicate>, perform: @escaping (NSPredicate) -> Void) -> Perform {
+            return Perform(method: .m_findOne__where_predicate(`predicate`), performs: perform)
+        }
+        public static func delete(entity: Parameter<Entity>, perform: @escaping (Entity) -> Void) -> Perform {
+            return Perform(method: .m_delete__entity_entity(`entity`), performs: perform)
+        }
+        public static func delete(entities: Parameter<[Entity]>, perform: @escaping ([Entity]) -> Void) -> Perform {
+            return Perform(method: .m_delete__entities_entities(`entities`), performs: perform)
+        }
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+    }
+}
+
+// MARK: - UnnamedAttributesProtocol
+
+open class UnnamedAttributesProtocolMock: UnnamedAttributesProtocol, Mock {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
+
+
+
+
+    open func methodWithUnnamedAttributes(_: Int) -> String {
+        addInvocation(.m_methodWithUnnamedAttributes)
+		let perform = methodPerformValue(.m_methodWithUnnamedAttributes) as? () -> Void
+		perform?()
+		var __value: String
+		do {
+		    __value = try methodReturnValue(.m_methodWithUnnamedAttributes).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for methodWithUnnamedAttributes(_: Int). Use given")
+			Failure("Stub return value not specified for methodWithUnnamedAttributes(_: Int). Use given")
+		}
+		return __value
+    }
+
+    open func methodWithUnnamedAndNamedAttributes(at int: Int, _: Int) -> String {
+        addInvocation(.m_methodWithUnnamedAndNamedAttributes__at_int(Parameter<Int>.value(`int`)))
+		let perform = methodPerformValue(.m_methodWithUnnamedAndNamedAttributes__at_int(Parameter<Int>.value(`int`))) as? (Int) -> Void
+		perform?(`int`)
+		var __value: String
+		do {
+		    __value = try methodReturnValue(.m_methodWithUnnamedAndNamedAttributes__at_int(Parameter<Int>.value(`int`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for methodWithUnnamedAndNamedAttributes(at int: Int, _: Int). Use given")
+			Failure("Stub return value not specified for methodWithUnnamedAndNamedAttributes(at int: Int, _: Int). Use given")
+		}
+		return __value
+    }
+
+
+    fileprivate enum MethodType {
+        case m_methodWithUnnamedAttributes
+        case m_methodWithUnnamedAndNamedAttributes__at_int(Parameter<Int>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+            case (.m_methodWithUnnamedAttributes, .m_methodWithUnnamedAttributes):
+                return true 
+            case (.m_methodWithUnnamedAndNamedAttributes__at_int(let lhsInt), .m_methodWithUnnamedAndNamedAttributes__at_int(let rhsInt)):
+                guard Parameter.compare(lhs: lhsInt, rhs: rhsInt, with: matcher) else { return false } 
+                return true 
+            default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case .m_methodWithUnnamedAttributes: return 0
+            case let .m_methodWithUnnamedAndNamedAttributes__at_int(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_methodWithUnnamedAttributes: return ".methodWithUnnamedAttributes(_:)()"
+            case .m_methodWithUnnamedAndNamedAttributes__at_int: return ".methodWithUnnamedAndNamedAttributes(at:_:)"
+            }
+        }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+        public static func methodWithUnnamedAttributes(willReturn: String...) -> MethodStub {
+            return Given(method: .m_methodWithUnnamedAttributes, products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func methodWithUnnamedAndNamedAttributes(at int: Parameter<Int>, willReturn: String...) -> MethodStub {
+            return Given(method: .m_methodWithUnnamedAndNamedAttributes__at_int(`int`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func methodWithUnnamedAttributes(willProduce: (Stubber<String>) -> Void) -> MethodStub {
+            let willReturn: [String] = []
+			let given: Given = { return Given(method: .m_methodWithUnnamedAttributes, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (String).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func methodWithUnnamedAndNamedAttributes(at int: Parameter<Int>, willProduce: (Stubber<String>) -> Void) -> MethodStub {
+            let willReturn: [String] = []
+			let given: Given = { return Given(method: .m_methodWithUnnamedAndNamedAttributes__at_int(`int`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (String).self)
+			willProduce(stubber)
+			return given
+        }
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        public static func methodWithUnnamedAttributes() -> Verify { return Verify(method: .m_methodWithUnnamedAttributes)}
+        public static func methodWithUnnamedAndNamedAttributes(at int: Parameter<Int>) -> Verify { return Verify(method: .m_methodWithUnnamedAndNamedAttributes__at_int(`int`))}
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        public static func methodWithUnnamedAttributes(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_methodWithUnnamedAttributes, performs: perform)
+        }
+        public static func methodWithUnnamedAndNamedAttributes(at int: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
+            return Perform(method: .m_methodWithUnnamedAndNamedAttributes__at_int(`int`), performs: perform)
+        }
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
     }
 }
 
 // MARK: - UserNetworkType
+
 open class UserNetworkTypeMock: UserNetworkType, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -10350,6 +12815,14 @@ open class UserNetworkTypeMock: UserNetworkType, Mock {
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -10419,6 +12892,14 @@ open class UserNetworkTypeMock: UserNetworkType, Mock {
             case let .m_testDefaultValues__value_value(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_getUser__for_idcompletion_completion: return ".getUser(for:completion:)"
+            case .m_getUserEscaping__for_idcompletion_completion: return ".getUserEscaping(for:completion:)"
+            case .m_doSomething__prop_prop: return ".doSomething(prop:)"
+            case .m_testDefaultValues__value_value: return ".testDefaultValues(value:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -10470,7 +12951,7 @@ open class UserNetworkTypeMock: UserNetworkType, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -10508,14 +12989,13 @@ open class UserNetworkTypeMock: UserNetworkType, Mock {
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 
 // MARK: - UserStorageType
+
 open class UserStorageTypeMock: UserStorageType, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -10542,6 +13022,14 @@ open class UserStorageTypeMock: UserStorageType, Mock {
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -10590,6 +13078,12 @@ open class UserStorageTypeMock: UserStorageType, Mock {
             switch self {
             case let .m_surname__for_name(p0): return p0.intValue
             case let .m_storeUser__name_namesurname_surname(p0, p1): return p0.intValue + p1.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_surname__for_name: return ".surname(for:)"
+            case .m_storeUser__name_namesurname_surname: return ".storeUser(name:surname:)"
             }
         }
     }
@@ -10645,7 +13139,7 @@ open class UserStorageTypeMock: UserStorageType, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -10683,10 +13177,8 @@ open class UserStorageTypeMock: UserStorageType, Mock {
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 

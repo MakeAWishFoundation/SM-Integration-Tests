@@ -7,12 +7,17 @@
 //
 
 import XCTest
+import SwiftyMocky
 @testable import Prototyping
 
 class UnitTests: XCTestCase {
 
     func testExample() {
-        XCTAssert(true)
+        let mock = NumberGeneratorMock()
+        Given(mock, .next(willReturn: 1,2,3))
+        XCTAssertEqual(mock.next(), 1)
+        XCTAssertEqual(mock.next(), 2)
+        XCTAssertEqual(mock.next(), 3)
     }
 
 }

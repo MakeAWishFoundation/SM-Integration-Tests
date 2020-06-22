@@ -1,4 +1,5 @@
 sourceryCommand: null
+
 mocky.iOS:
   sources:
     include:
@@ -16,6 +17,7 @@ mocky.iOS:
   - CoreGraphics
   - Foundation
   - UIKit
+
 mocky.macOS:
   sources:
     include:
@@ -31,6 +33,7 @@ mocky.macOS:
   - Mocky_Example_macOS
   import:
   - Foundation
+
 mocky.tvOS:
   sources:
     include:
@@ -46,15 +49,17 @@ mocky.tvOS:
   - Mocky_Example_tvOS
   import:
   - Foundation
-cli.core.tests:
+
+mocky.spm:
   sources:
     include:
-    - ./Sources/SwiftyMockyCLICore
-  output: ./Tests/SwiftyMockyCLICoreTests/Mock.generated.swift
+    - "./SwiftyMocky-Example/Shared/Example\ 1"
+    exclude:
+    - ./SwiftyMocky-Example/Shared/Other/Excluded.generated.swift
+  output: ./Tests/SwiftyMockyTests/Mock.generated.swift
   targets:
-  - Package.swift/SwiftyMockyCLICore
+  - SwiftyMockyTests
   testable:
-  - SwiftyMockyCLICore
+  - Mocky_Example_SPM
   import:
   - Foundation
-  - PathKit

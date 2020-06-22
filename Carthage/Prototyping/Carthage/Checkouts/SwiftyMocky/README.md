@@ -19,7 +19,7 @@ Check out [guides][link-guides-contents], or full [documentation][link-docs]
 1. [Overview](#overview)
 1. [Current version](#current-version)
 1. [Getting started:](#getting-started)
-    1. [Installing SiwftyMocky CLI](#installation)
+    1. [Installing SwiftyMocky CLI](#installation)
     1. [Integrating SwiftyMocky runtime into test target](#integration)
     1. [Generate mocks](#generation)
 1. [Usage:](#usage)
@@ -56,11 +56,21 @@ The idea of **SwiftyMocky** is to automatically mock Swift protocols. The main f
 
 ## Current version
 
-We consider current version as stable. We are moving toward using the new [Mockfile][link-guides-mockfile] but the previous configuration format would be still supported, until SwiftyMocky 4.0. Library works with Swift **4.1, 4.2, 5.0**  and  Sourcery 0.16.0.
+We consider current version as stable. We are moving toward using the new [Mockfile][link-guides-mockfile] but the previous configuration format would be still supported, until SwiftyMocky 4.0. Library works with Swift **4.1, 4.2, 5.0, 5.1.2**  and  Sourcery 0.17.0.
 
-While it is technically possible to integrate SwiftyMocky on Linux targets, there is no Mock generation feature there yet.
+While it is technically possible to integrate SwiftyMocky on Linux targets, there is no Mock generation feature there yet. You can use SwiftyMokcy runtime via SwiftPM though, as long as your are fine with generating mocks on mac machine.
 
 <a name="getting-started"></a>
+
+## Migration from 3.2.0 and below
+
+The migration is not required, you can keep using **SwiftyMocky** as you did before. The [Legacy setup](https://github.com/MakeAWishFoundation/SwiftyMocky/blob/master/guides/Legacy.md) is described in [guides section](https://github.com/MakeAWishFoundation/SwiftyMocky/blob/master/guides/Contents.md).
+
+Still, we would encourage to try new **CLI** and share a feedback. We believe it will make using and setting up **SwiftyMocky** way easier. If you have an existing setup, try:
+
+```bash
+> swiftymocky migrate
+```
 
 ## Getting started
 
@@ -81,6 +91,12 @@ To start working with **SwiftyMocky** you need to:
 > mint install MakeAWishFoundation/SwiftyMocky
 ```
 
+**[Marathon 🏃](https://github.com/JohnSundell/Marathon)**:
+
+```bash
+> marathon install MakeAWishFoundation/SwiftyMocky
+```
+
 <a name="integration"></a>
 
 ### 2. Integrating SwiftyMocky runtime into test target:
@@ -95,7 +111,27 @@ pod "SwiftyMocky"
 
 **[Carthage](https://github.com/Carthage/Carthage)**: 
 
-For [Carthage](https://github.com/Carthage/Carthage) install instructions, see full [documentation][link-docs-installation].
+To install, add following to you Cartfile:
+
+```ruby
+github "MakeAWishFoundation/SwiftyMocky"
+```
+
+Then execute `carthage update`
+
+For [Carthage](https://github.com/Carthage/Carthage), few additional steps are required ⚠️. For detailed install instructions, see full [documentation][link-docs-installation-carthage].
+
+**[Swift Package Manager](https://swift.org/package-manager/)**:
+
+Add **SwiftyMocky** to you **Package.swift** dependencies:
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/MakeAWishFoundation/SwiftyMocky", from: "4.0.0"),
+]
+```
+
+> **Note:** Examples of **SwiftyMocky** integration as a tool for Unit tests, as well as a Prototyping framework, are here: [https://github.com/MakeAWishFoundation/SM-Integration-Tests](https://github.com/MakeAWishFoundation/SM-Integration-Tests)
 
 <a name="generation"></a>
 
@@ -121,7 +157,7 @@ If you don't want to migrate to our **CLI** and prefer to use "raw" Sourcery, pl
 
 <a name="mock-annotate"></a>
 
-## 1.Marking protocols to be mocked
+## 1. Marking protocols to be mocked
 
 Create 'dummy' protocol somewhere in your project, like: `protocol AutoMockable { }`
 
@@ -242,7 +278,7 @@ Verify(mock, .never, .name(set: .value("Bishop")))
 
 All mocks has **perform** method (accessible both as instance method or global function), with easy to use syntax, allowing to specify closure, that will be executed upon stubbed method being called.
 
-It uses same paramter wrapping features as given, so you can specify different **Perform** cases for different attributes set.
+It uses same parameter wrapping features as given, so you can specify different **Perform** cases for different attributes set.
 
 It's very handy when working with completion block based approach.
 
@@ -323,18 +359,19 @@ SwiftyMocky is available under the MIT license. See the [LICENSE][link-license] 
 [link-guides-examples]: ./guides/Examples.md
 [link-changelog]: ./guides/CHANGELOG.md
 
-[link-guides-cli]: ./guides/CommanLineInterface.md
-[link-guides-cli-migration]: ./guides/CommanLineInterface.md#migration
+[link-guides-cli]: ./guides/Command%20Line%20Interface.md
+[link-guides-cli-migration]: ./guides/Command%20Line%20Interface.md#migration
 [link-guides-cli-legacy]: ./guides/Legacy.md
-[link-guides-cli-generate]: ./guides/CommanLineInterface.md#generate
+[link-guides-cli-generate]: ./guides/Command%20Line%20Interface.md#generate
 [link-guides-mockfile]: ./guides/Mockfile.md
 
 <!-- Links based on tag -->
 
-[link-docs]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.2.0/docs/index.html
-[link-docs-features]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.2.0/docs/supported-features.html
-[link-docs-installation]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.2.0/docs/installation.html
-[link-docs-setup]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.2.0/docs/setup-in-project.html
+[link-docs]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.0.0/docs/index.html
+[link-docs-features]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.0.0/docs/supported-features.html
+[link-docs-installation]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.0.0/docs/installation.html
+[link-docs-installation-carthage]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.0.0/docs/installation.html#installation-carthage
+[link-docs-setup]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.0.0/docs/setup-in-project.html
 
 <!-- Assets -->
 

@@ -1,6 +1,19 @@
 # Mockfile is a SwiftyMocky YAML configuration file
 sourceryCommand: null
 
+unit.prototype:
+  prototype: true
+  sources:
+    include:
+        - ./Sources/Unit
+    exclude: []
+  output:
+    ./Sources/Unit/Prototypes.generated.swift
+  targets:
+    - Package.swift/Unit
+  import:
+    - Foundation
+
 unit.tests.mock:
   sources:
     include:
@@ -10,7 +23,7 @@ unit.tests.mock:
     ./Tests/UnitTests/Mock.generated.swift
   targets:
     - Package.swift/UnitTests
-  testable: 
+  testable:
     - Unit
-  import: 
+  import:
     - Foundation

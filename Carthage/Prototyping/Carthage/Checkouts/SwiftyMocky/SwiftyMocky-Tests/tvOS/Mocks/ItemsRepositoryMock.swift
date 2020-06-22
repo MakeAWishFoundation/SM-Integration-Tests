@@ -33,6 +33,14 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         self.line = line
     }
 
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
 
 
 
@@ -108,6 +116,14 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
             case let .m_storedDetails__item_item(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_storeItems__items_items: return ".storeItems(items:)"
+            case .m_storeDetails__details_details: return ".storeDetails(details:)"
+            case .m_storedItems: return ".storedItems()"
+            case .m_storedDetails__item_item: return ".storedDetails(item:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -179,7 +195,7 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -217,10 +233,8 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
     
 // sourcery:end

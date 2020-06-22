@@ -12,11 +12,12 @@ import SwiftyMocky
 @testable import Mocky_Example_iOS
 #elseif os(tvOS)
 @testable import Mocky_Example_tvOS
-#elseif os(macOS)
+#else
 @testable import Mocky_Example_macOS
 #endif
 
 class ExpressibleByLiteralsTests: XCTestCase {
+    
     override func setUp() {
         super.setUp()
     }
@@ -204,6 +205,35 @@ class ExpressibleByLiteralsTests: XCTestCase {
         XCTAssertEqual(mock.methodWithArrayOfOther(p: [SomeClass(v: 0), SomeClass(v: 1)]), 1)
 
         Verify(mock, 2, .methodWithArrayOfOther(p: .any))
+
+        Given(mock, .methodWithSetOfInt(p: .any, willReturn: 0))
+        Given(mock, .methodWithSetOfInt(p: [0,1,2], willReturn: 1))
+        Given(mock, .methodWithSetOfInt(p: [2,3,4], willReturn: 2))
+
+        XCTAssertEqual(mock.methodWithSetOfInt(p: [0,1]), 0)
+        XCTAssertEqual(mock.methodWithSetOfInt(p: [0,1,2]), 1)
+        XCTAssertEqual(mock.methodWithSetOfInt(p: [2,3,4]), 2)
+
+        Verify(mock, 3, .methodWithSetOfInt(p: .any))
+        Verify(mock, .once, .methodWithSetOfInt(p: [0,1]))
+        Verify(mock, .once, .methodWithSetOfInt(p: [0,1,2]))
+        Verify(mock, .once, .methodWithSetOfInt(p: [2,3,4]))
+
+        Given(mock, .methodWithOptionalSetOfInt(p: .any, willReturn: 0))
+        Given(mock, .methodWithOptionalSetOfInt(p: [0,1,2], willReturn: 1))
+        Given(mock, .methodWithOptionalSetOfInt(p: [2,3,4], willReturn: 2))
+        Given(mock, .methodWithOptionalSetOfInt(p: nil, willReturn: 3))
+
+        XCTAssertEqual(mock.methodWithOptionalSetOfInt(p: [0,1]), 0)
+        XCTAssertEqual(mock.methodWithOptionalSetOfInt(p: [0,1,2]), 1)
+        XCTAssertEqual(mock.methodWithOptionalSetOfInt(p: [2,3,4]), 2)
+        XCTAssertEqual(mock.methodWithOptionalSetOfInt(p: nil), 3)
+
+        Verify(mock, 4, .methodWithOptionalSetOfInt(p: .any))
+        Verify(mock, .once, .methodWithOptionalSetOfInt(p: [0,1]))
+        Verify(mock, .once, .methodWithOptionalSetOfInt(p: [0,1,2]))
+        Verify(mock, .once, .methodWithOptionalSetOfInt(p: [2,3,4]))
+        Verify(mock, .once, .methodWithOptionalSetOfInt(p: nil))
     }
 
     func test_dict_literals() {

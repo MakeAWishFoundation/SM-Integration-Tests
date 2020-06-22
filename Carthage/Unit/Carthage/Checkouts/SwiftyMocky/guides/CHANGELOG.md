@@ -4,6 +4,52 @@ All changes to SwiftyMocky project will be documented in this file.
 
 -----
 
+## __3.4.0__ / 2019
+
+#### Added:
+* New typealias "annotation", allowing to fix common issues with generic protocols and ambigious class names
+* A "sourcery" section to mockfile, to specify additional sourcery configurations to execute during generation
+* `resetMock(...)` methods to reset mock internals
+* New tests suite for Xcode 11.2 (Swift 5.2)
+
+#### Deprecated:
+* deprecated `clear()` method on `StaticMock` in favour of `resetMock(...)`
+
+#### Fixed:
+* Fixed Parameter ExpressibleByArrayLiteral init, by @chuckluck44 (Charley Luckhardt)
+* Fixed Xcode 11 support by @glyuck (Vladimir Lyukov)
+* Fixed typos in Readme, by @iliaskarim and @mikeakers (Mike Akers)
+* Fixed tests for swift 5.0 and linux tests
+
+## __3.3.4__ / 2019
+
+#### Fixed:
+* Fixed problem with not printable ASCI characters by @timedelta (Bryan Nova)
+* Fixed problem with missing generic constraints by @demalex (Alex Demishkevych)
+
+-----
+
+## __3.3.3__ / 2019
+
+#### Fixed:
+* Swift 5.0 issue with custom assertions not compiling
+
+-----
+
+## __3.3.2__ / 2019
+
+#### Fixed:
+* Fixed problems with multiple mocks being part of same target by @davidmtamas
+
+-----
+
+## __3.3.1__ / 2019
+
+#### Fixed:
+* Removed leftover swift version setting to 5.0 from SwiftyPrototype target, causing problems for Carthage setup
+
+-----
+
 ## __3.3.0__ / 2019
 
 #### Added:
@@ -11,11 +57,11 @@ All changes to SwiftyMocky project will be documented in this file.
 * Added support for Swift Package Manager (SPM)
 * New configuration file for working with multiple targets - `Mockfile`
 * Fixed redundant constraints for methods with stripped generics (@tarbayev)
+* Added Argument captor by @timedelta (Bryan Nova)
+
 #### Removed:
 * dropped Swift 4.0, SwiftyMocky now requires Swift 4.1+
-* deprecated MockyCustom subspec. We now check XCTest availability instead of using separate subspec for prototyping
-
------
+* dropped MockyCustom subspec, new subspec is Prototyping, for Carthage SwiftyPrototype
 
 -----
 

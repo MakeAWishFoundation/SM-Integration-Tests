@@ -13,9 +13,9 @@
 		C8DAF77B2298AE6C00FF1741 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C8DAF77A2298AE6C00FF1741 /* Assets.xcassets */; };
 		C8DAF77E2298AE6C00FF1741 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8DAF77C2298AE6C00FF1741 /* LaunchScreen.storyboard */; };
 		C8DAF7892298AE6C00FF1741 /* UnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DAF7882298AE6C00FF1741 /* UnitTests.swift */; };
-		C8DAF7942298B0B000FF1741 /* Mock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DAF7932298B0B000FF1741 /* Mock.generated.swift */; };
-		C8DAF7972298B17F00FF1741 /* SwiftyMocky.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8DAF7962298B17F00FF1741 /* SwiftyMocky.framework */; };
 		C8DAF7992298B1A500FF1741 /* SwiftyMocky.framework in [SwiftyMocky] copy */ = {isa = PBXBuildFile; fileRef = C8DAF7962298B17F00FF1741 /* SwiftyMocky.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CCCB8AB024A0990F003CA85F /* Mock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DAF7932298B0B000FF1741 /* Mock.generated.swift */; };
+		CCCB8AB124A09A6E003CA85F /* SwiftyMocky.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8DAF7962298B17F00FF1741 /* SwiftyMocky.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,7 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C8DAF7972298B17F00FF1741 /* SwiftyMocky.framework in Frameworks */,
+				CCCB8AB124A09A6E003CA85F /* SwiftyMocky.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,7 +237,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C8DAF7942298B0B000FF1741 /* Mock.generated.swift in Sources */,
+				CCCB8AB024A0990F003CA85F /* Mock.generated.swift in Sources */,
 				C8DAF7892298AE6C00FF1741 /* UnitTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -438,8 +438,8 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"@loader_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.test.UnitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -461,8 +461,8 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"@loader_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.test.UnitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

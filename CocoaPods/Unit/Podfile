@@ -7,7 +7,11 @@ target 'Unit' do
   target 'UnitTests' do
     inherit! :search_paths
     # Pods for testing
-    pod 'SwiftyMocky', '~> 3.3.4'
+    pod 'SwiftyMocky', :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :branch => 'develop'
   end
 
+end
+
+post_install do |installer|
+  system("swiftymocky generate")
 end

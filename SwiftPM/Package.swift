@@ -12,17 +12,21 @@ let package = Package(
         ),
     ],
     dependencies: [
-       .package(url: "https://github.com/MakeAWishFoundation/SwiftyMocky", from: "3.3.1"),
+       .package(url: "https://github.com/MakeAWishFoundation/SwiftyMocky", .branch("develop")),
     ],
     targets: [
         .target(
             name: "Unit",
-            dependencies: []),
+            dependencies: [
+                "SwiftyPrototype",
+            ]
+        ),
         .testTarget(
             name: "UnitTests",
             dependencies: [
                 "Unit",
                 "SwiftyMocky"
-            ]),
+            ]
+        ),
     ]
 )

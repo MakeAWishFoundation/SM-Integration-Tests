@@ -15,10 +15,20 @@ class Helpers {
             return nil
         }
     }
+    /// Extract all typealiases from "annotations"
+    static func extractTypealiases(from annotated: SourceryRuntime.Annotated) -> [String] {
+        if let types = annotated.annotations["typealias"] as? [String] {
+            return types.reversed()
+        } else if let type = annotated.annotations["typealias"] as? String {
+            return [type]
+        } else {
+            return []
+        }
+    }
     static func extractGenericsList(_ associatedTypes: [String]?) -> [String] {
         return associatedTypes?.flatMap {
             split($0, byFirstOccurenceOf: " where ").0.replacingOccurrences(of: " ", with: "").characters.split(separator: ":").map(String.init).first
-            }.map { "\($0)" } ?? []
+        }.map { "\($0)" } ?? []
     }
     static func extractGenericTypesModifier(_ associatedTypes: [String]?) -> String {
         let all = extractGenericsList(associatedTypes)
@@ -41,5 +51,11 @@ class Helpers {
             .joined(separator: ", ")
         guard !constraints.isEmpty else { return "" }
         return " where \(constraints)"
+    }
+    static func extractAttributes(from attributes: [String: SourceryRuntime.Attribute]) -> String {
+        return attributes.map { $0.1.description }
+        .filter { !["private", "internal", "public", "open", "optional"].contains($0) }
+        .sorted()
+        .joined(separator: " ")
     }
 }

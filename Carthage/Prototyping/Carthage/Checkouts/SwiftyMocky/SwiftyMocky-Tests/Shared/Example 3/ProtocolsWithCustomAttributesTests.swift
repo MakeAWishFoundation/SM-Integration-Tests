@@ -12,7 +12,7 @@ import SwiftyMocky
     @testable import Mocky_Example_iOS
 #elseif os(tvOS)
     @testable import Mocky_Example_tvOS
-#elseif os(macOS)
+#else
     @testable import Mocky_Example_macOS
 #endif
 
@@ -21,6 +21,7 @@ enum UserVerifyError: Error {
 }
 
 class ProtocolsWithCustomAttributesTests: XCTestCase {
+
     func test_protocol_using_tuples() {
         let mock = ProtocolWithTuplesMock()
 

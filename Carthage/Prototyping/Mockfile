@@ -10,3 +10,15 @@ Prototype:
   - Prototyping
   import:
   - UIKit
+
+PrototypingTests:
+  sources:
+    include:
+    - ./Prototyping
+  output: ./PrototypingTests/Mock.generated.swift
+  targets:
+  - PrototypingTests
+  testable:
+  - Prototyping
+  import:
+  - UIKit

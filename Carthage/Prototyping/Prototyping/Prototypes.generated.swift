@@ -1,41 +1,17 @@
-// Generated using Sourcery 0.16.1 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 0.18.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 
 
-// Generated with SwiftyMocky 3.3.0
+// Generated with SwiftyPrototype 4.0.0
 
 import SwiftyPrototype
-#if !MockyCustom
-import XCTest
-#endif
 import UIKit
-#if MockyCustom
-    public final class MockyAssertion {
-        public static var handler: ((Bool, String, StaticString, UInt) -> Void)?
-    }
-
-    func MockyAssert(_ expression: @autoclosure () -> Bool, _ message: @autoclosure () -> String = "Verification failed", file: StaticString = #file, line: UInt = #line) {
-        guard let handler = MockyAssertion.handler else {
-            assert(expression(), message(), file: file, line: line)
-            return
-        }
-
-        handler(expression(), message(), file, line)
-    }
-#else
-    func MockyAssert(_ expression: @autoclosure () -> Bool, _ message: @autoclosure () -> String = "Verification failed", file: StaticString = #file, line: UInt = #line) {
-        #if canImport(XCTest)
-        XCTAssert(expression(), message(), file: file, line: line)
-        #else 
-        assert(expression(), message(), file: file, line: line)
-        #endif
-    }
-#endif
 
 
 // MARK: - NumberGenerator
-open class NumberGeneratorMock: NumberGenerator, Mock {
+
+open class NumberGeneratorPrototype: NumberGenerator, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
         self.sequencingPolicy = sequencingPolicy
@@ -61,6 +37,14 @@ open class NumberGeneratorMock: NumberGenerator, Mock {
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -107,6 +91,12 @@ open class NumberGeneratorMock: NumberGenerator, Mock {
             switch self {
             case .m_next: return 0
             case let .m_set__range_range(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_next: return ".next()"
+            case .m_set__range_range: return ".set(range:)"
             }
         }
     }
@@ -162,7 +152,7 @@ open class NumberGeneratorMock: NumberGenerator, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -200,10 +190,8 @@ open class NumberGeneratorMock: NumberGenerator, Mock {
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
 }
 

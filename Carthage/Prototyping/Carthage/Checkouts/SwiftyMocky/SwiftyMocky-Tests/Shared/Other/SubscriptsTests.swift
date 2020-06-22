@@ -12,11 +12,12 @@ import SwiftyMocky
 @testable import Mocky_Example_iOS
 #elseif os(tvOS)
 @testable import Mocky_Example_tvOS
-#elseif os(macOS)
+#else
 @testable import Mocky_Example_macOS
 #endif
 
 class SubscriptsTests: XCTestCase {
+
     func test_basic_subscript_usage() {
         let mock = ProtocolWithSubscriptsMock()
 

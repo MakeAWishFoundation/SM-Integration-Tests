@@ -12,11 +12,12 @@ import SwiftyMocky
     @testable import Mocky_Example_iOS
 #elseif os(tvOS)
     @testable import Mocky_Example_tvOS
-#elseif os(macOS)
+#else
     @testable import Mocky_Example_macOS
 #endif
 
 class ProtocolsWithGenericsTests: XCTestCase {
+
     func test_protocol_with_generic_methods() {
         let mock = ProtocolWithGenericMethodsMock()
 
