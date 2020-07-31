@@ -52,6 +52,18 @@ platform :ios do
 
 end
 
+platform :tvos do
+    desc "Carthage integration with unit tests"
+    lane :test_carthage_unit do
+        sh "cd ./../Carthage/Unit && carthage update --platform tvOS"
+        sh "cd ./../Carthage/Unit && mint run swiftymocky generate"
+        scan(
+            scheme: "UnitTests-tvOS",
+            project: "./Carthage/Unit/Unit.xcodeproj",
+        )
+    end
+end
+
 platform :spm do
     desc "Runs all the tests"
     lane :test do
