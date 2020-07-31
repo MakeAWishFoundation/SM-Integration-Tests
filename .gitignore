@@ -69,3 +69,4 @@ fastlane/test_output
 CocoaPods/.DS_Store
 .DS_Store
 .vscode
+**/Carthage/Checkouts

@@ -1,4 +1,6 @@
 sourceryCommand: null
+sourceryTemplate: null
+
 UnitTests:
   sources:
     include:

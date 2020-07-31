@@ -14,6 +14,16 @@
 		C8DAF77E2298AE6C00FF1741 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8DAF77C2298AE6C00FF1741 /* LaunchScreen.storyboard */; };
 		C8DAF7892298AE6C00FF1741 /* UnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DAF7882298AE6C00FF1741 /* UnitTests.swift */; };
 		C8DAF7992298B1A500FF1741 /* SwiftyMocky.framework in [SwiftyMocky] copy */ = {isa = PBXBuildFile; fileRef = C8DAF7962298B17F00FF1741 /* SwiftyMocky.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CC866BC424D4CCAE0050F760 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DAF7752298AE6B00FF1741 /* ViewController.swift */; };
+		CC866BC524D4CCAE0050F760 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DAF7732298AE6B00FF1741 /* AppDelegate.swift */; };
+		CC866BC924D4CCAE0050F760 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C8DAF77A2298AE6C00FF1741 /* Assets.xcassets */; };
+		CC866BD424D4CD240050F760 /* Mock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DAF7932298B0B000FF1741 /* Mock.generated.swift */; };
+		CC866BD524D4CD240050F760 /* UnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DAF7882298AE6C00FF1741 /* UnitTests.swift */; };
+		CC866BE524D4D0650050F760 /* Main-tvOS.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC866BE424D4D0650050F760 /* Main-tvOS.storyboard */; };
+		CC866BE824D4D8170050F760 /* LaunchScreen-tvOS.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC866BE624D4D6330050F760 /* LaunchScreen-tvOS.storyboard */; };
+		CC866BEA24D4D9D90050F760 /* SwiftyMocky.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC866BE924D4D9D90050F760 /* SwiftyMocky.framework */; };
+		CC866BED24D4DADB0050F760 /* SwiftyMocky.framework in Resources */ = {isa = PBXBuildFile; fileRef = CC866BE924D4D9D90050F760 /* SwiftyMocky.framework */; };
+		CC866BEE24D4DADD0050F760 /* SwiftyMocky.framework in [SwiftyMocky] copy */ = {isa = PBXBuildFile; fileRef = CC866BE924D4D9D90050F760 /* SwiftyMocky.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CCCB8AB024A0990F003CA85F /* Mock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DAF7932298B0B000FF1741 /* Mock.generated.swift */; };
 		CCCB8AB124A09A6E003CA85F /* SwiftyMocky.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8DAF7962298B17F00FF1741 /* SwiftyMocky.framework */; };
 /* End PBXBuildFile section */
@@ -26,6 +36,13 @@
 			remoteGlobalIDString = C8DAF76F2298AE6B00FF1741;
 			remoteInfo = Unit;
 		};
+		CC866BE024D4CD330050F760 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C8DAF7682298AE6B00FF1741 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CC866BC224D4CCAE0050F760;
+			remoteInfo = "Unit-tvOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -36,6 +53,17 @@
 			dstSubfolderSpec = 10;
 			files = (
 				C8DAF7992298B1A500FF1741 /* SwiftyMocky.framework in [SwiftyMocky] copy */,
+			);
+			name = "[SwiftyMocky] copy";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC866BD924D4CD240050F760 /* [SwiftyMocky] copy */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				CC866BEE24D4DADD0050F760 /* SwiftyMocky.framework in [SwiftyMocky] copy */,
 			);
 			name = "[SwiftyMocky] copy";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -55,6 +83,14 @@
 		C8DAF78A2298AE6C00FF1741 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C8DAF7932298B0B000FF1741 /* Mock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mock.generated.swift; sourceTree = "<group>"; };
 		C8DAF7962298B17F00FF1741 /* SwiftyMocky.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyMocky.framework; path = Carthage/Build/iOS/SwiftyMocky.framework; sourceTree = "<group>"; };
+		CC866BCE24D4CCAE0050F760 /* Unit-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Unit-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC866BCF24D4CCAE0050F760 /* Unit copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Unit copy-Info.plist"; path = "/Users/andrzejmichnia/Projekty/SM-Integration-Tests/Carthage/Unit/Unit copy-Info.plist"; sourceTree = "<absolute>"; };
+		CC866BDE24D4CD240050F760 /* UnitTests-tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "UnitTests-tvOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC866BDF24D4CD240050F760 /* UnitTests copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "UnitTests copy-Info.plist"; path = "/Users/andrzejmichnia/Projekty/SM-Integration-Tests/Carthage/Unit/UnitTests copy-Info.plist"; sourceTree = "<absolute>"; };
+		CC866BE424D4D0650050F760 /* Main-tvOS.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Main-tvOS.storyboard"; sourceTree = "<group>"; };
+		CC866BE624D4D6330050F760 /* LaunchScreen-tvOS.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "LaunchScreen-tvOS.storyboard"; sourceTree = "<group>"; };
+		CC866BE924D4D9D90050F760 /* SwiftyMocky.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyMocky.framework; path = Carthage/Build/tvOS/SwiftyMocky.framework; sourceTree = "<group>"; };
+		CC866BEF24D4DC7C0050F760 /* Info-tvOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-tvOS.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +109,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CC866BC624D4CCAE0050F760 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC866BD624D4CD240050F760 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC866BEA24D4D9D90050F760 /* SwiftyMocky.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -83,6 +134,8 @@
 				C8DAF7872298AE6C00FF1741 /* UnitTests */,
 				C8DAF7712298AE6B00FF1741 /* Products */,
 				C8DAF7952298B17E00FF1741 /* Frameworks */,
+				CC866BCF24D4CCAE0050F760 /* Unit copy-Info.plist */,
+				CC866BDF24D4CD240050F760 /* UnitTests copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -91,6 +144,8 @@
 			children = (
 				C8DAF7702298AE6B00FF1741 /* Unit.app */,
 				C8DAF7842298AE6C00FF1741 /* UnitTests.xctest */,
+				CC866BCE24D4CCAE0050F760 /* Unit-tvOS.app */,
+				CC866BDE24D4CD240050F760 /* UnitTests-tvOS.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -100,10 +155,13 @@
 			children = (
 				C8DAF7732298AE6B00FF1741 /* AppDelegate.swift */,
 				C8DAF7752298AE6B00FF1741 /* ViewController.swift */,
+				CC866BE424D4D0650050F760 /* Main-tvOS.storyboard */,
 				C8DAF7772298AE6B00FF1741 /* Main.storyboard */,
 				C8DAF77A2298AE6C00FF1741 /* Assets.xcassets */,
 				C8DAF77C2298AE6C00FF1741 /* LaunchScreen.storyboard */,
+				CC866BE624D4D6330050F760 /* LaunchScreen-tvOS.storyboard */,
 				C8DAF77F2298AE6C00FF1741 /* Info.plist */,
+				CC866BEF24D4DC7C0050F760 /* Info-tvOS.plist */,
 			);
 			path = Unit;
 			sourceTree = "<group>";
@@ -121,6 +179,7 @@
 		C8DAF7952298B17E00FF1741 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CC866BE924D4D9D90050F760 /* SwiftyMocky.framework */,
 				C8DAF7962298B17F00FF1741 /* SwiftyMocky.framework */,
 			);
 			name = Frameworks;
@@ -165,6 +224,42 @@
 			productReference = C8DAF7842298AE6C00FF1741 /* UnitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		CC866BC224D4CCAE0050F760 /* Unit-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CC866BCB24D4CCAE0050F760 /* Build configuration list for PBXNativeTarget "Unit-tvOS" */;
+			buildPhases = (
+				CC866BC324D4CCAE0050F760 /* Sources */,
+				CC866BC624D4CCAE0050F760 /* Frameworks */,
+				CC866BC724D4CCAE0050F760 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Unit-tvOS";
+			productName = Unit;
+			productReference = CC866BCE24D4CCAE0050F760 /* Unit-tvOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CC866BD024D4CD240050F760 /* UnitTests-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CC866BDB24D4CD240050F760 /* Build configuration list for PBXNativeTarget "UnitTests-tvOS" */;
+			buildPhases = (
+				CC866BD324D4CD240050F760 /* Sources */,
+				CC866BD624D4CD240050F760 /* Frameworks */,
+				CC866BD824D4CD240050F760 /* Resources */,
+				CC866BD924D4CD240050F760 /* [SwiftyMocky] copy */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CC866BE124D4CD330050F760 /* PBXTargetDependency */,
+			);
+			name = "UnitTests-tvOS";
+			productName = UnitTests;
+			productReference = CC866BDE24D4CD240050F760 /* UnitTests-tvOS.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -181,6 +276,9 @@
 					C8DAF7832298AE6C00FF1741 = {
 						CreatedOnToolsVersion = 10.2.1;
 						TestTargetID = C8DAF76F2298AE6B00FF1741;
+					};
+					CC866BD024D4CD240050F760 = {
+						TestTargetID = CC866BC224D4CCAE0050F760;
 					};
 				};
 			};
@@ -199,6 +297,8 @@
 			targets = (
 				C8DAF76F2298AE6B00FF1741 /* Unit */,
 				C8DAF7832298AE6C00FF1741 /* UnitTests */,
+				CC866BC224D4CCAE0050F760 /* Unit-tvOS */,
+				CC866BD024D4CD240050F760 /* UnitTests-tvOS */,
 			);
 		};
 /* End PBXProject section */
@@ -218,6 +318,24 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC866BC724D4CCAE0050F760 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC866BE524D4D0650050F760 /* Main-tvOS.storyboard in Resources */,
+				CC866BE824D4D8170050F760 /* LaunchScreen-tvOS.storyboard in Resources */,
+				CC866BC924D4CCAE0050F760 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC866BD824D4CD240050F760 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC866BED24D4DADB0050F760 /* SwiftyMocky.framework in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,6 +360,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CC866BC324D4CCAE0050F760 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC866BC424D4CCAE0050F760 /* ViewController.swift in Sources */,
+				CC866BC524D4CCAE0050F760 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC866BD324D4CD240050F760 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC866BD424D4CD240050F760 /* Mock.generated.swift in Sources */,
+				CC866BD524D4CD240050F760 /* UnitTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -249,6 +385,11 @@
 			isa = PBXTargetDependency;
 			target = C8DAF76F2298AE6B00FF1741 /* Unit */;
 			targetProxy = C8DAF7852298AE6C00FF1741 /* PBXContainerItemProxy */;
+		};
+		CC866BE124D4CD330050F760 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CC866BC224D4CCAE0050F760 /* Unit-tvOS */;
+			targetProxy = CC866BE024D4CD330050F760 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -472,6 +613,96 @@
 			};
 			name = Release;
 		};
+		CC866BCC24D4CCAE0050F760 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YYAKJ5SR76;
+				INFOPLIST_FILE = "Unit/Info-tvOS.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_SWIFT_FLAGS = "-DMocky $(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.Unit;
+				PRODUCT_MODULE_NAME = Unit;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,3";
+			};
+			name = Debug;
+		};
+		CC866BCD24D4CCAE0050F760 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YYAKJ5SR76;
+				INFOPLIST_FILE = "Unit/Info-tvOS.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_SWIFT_FLAGS = "-DMocky $(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.Unit;
+				PRODUCT_MODULE_NAME = Unit;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,3";
+			};
+			name = Release;
+		};
+		CC866BDC24D4CD240050F760 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YYAKJ5SR76;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/Build/tvOS";
+				INFOPLIST_FILE = UnitTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"$(PROJECT_DIR)/Carthage/Build/tvOS",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.UnitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,3";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Unit-tvOS.app/Unit-tvOS";
+			};
+			name = Debug;
+		};
+		CC866BDD24D4CD240050F760 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YYAKJ5SR76;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/Build/tvOS";
+				INFOPLIST_FILE = UnitTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"$(PROJECT_DIR)/Carthage/Build/tvOS",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.UnitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,3";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Unit-tvOS.app/Unit-tvOS";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -498,6 +729,24 @@
 			buildConfigurations = (
 				C8DAF7912298AE6C00FF1741 /* Debug */,
 				C8DAF7922298AE6C00FF1741 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CC866BCB24D4CCAE0050F760 /* Build configuration list for PBXNativeTarget "Unit-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CC866BCC24D4CCAE0050F760 /* Debug */,
+				CC866BCD24D4CCAE0050F760 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CC866BDB24D4CD240050F760 /* Build configuration list for PBXNativeTarget "UnitTests-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CC866BDC24D4CD240050F760 /* Debug */,
+				CC866BDD24D4CD240050F760 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
