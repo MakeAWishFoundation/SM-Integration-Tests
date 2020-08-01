@@ -44,6 +44,15 @@ Cocoapods integration as main app prototyping library
 
 ----
 
+## tvos
+### tvos test_carthage_unit
+```
+fastlane tvos test_carthage_unit
+```
+Carthage integration with unit tests
+
+----
+
 ## spm
 ### spm test
 ```

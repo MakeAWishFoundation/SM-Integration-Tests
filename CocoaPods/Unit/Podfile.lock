@@ -1,22 +1,29 @@
 PODS:
-  - Sourcery (0.16.1)
-  - SwiftyMocky (3.3.1):
-    - SwiftyMocky/Core (= 3.3.1)
-  - SwiftyMocky/Core (3.3.1):
-    - Sourcery (>= 0.16)
+  - Sourcery (0.18.0)
+  - SwiftyMocky (4.0.0):
+    - Sourcery (>= 0.18)
 
 DEPENDENCIES:
-  - SwiftyMocky
+  - SwiftyMocky (from `https://github.com/MakeAWishFoundation/SwiftyMocky.git`, branch `master`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - Sourcery
-    - SwiftyMocky
+
+EXTERNAL SOURCES:
+  SwiftyMocky:
+    :branch: master
+    :git: https://github.com/MakeAWishFoundation/SwiftyMocky.git
+
+CHECKOUT OPTIONS:
+  SwiftyMocky:
+    :commit: a5f1d0ce4d50f89d0ad1c3b870d144a769c8fd0b
+    :git: https://github.com/MakeAWishFoundation/SwiftyMocky.git
 
 SPEC CHECKSUMS:
-  Sourcery: 16779170d35ee204666843b09031f36721a84bcc
-  SwiftyMocky: ece1c006fab5a3fc3d8b94fd8f2175743b7e11ac
+  Sourcery: e0e8658a1ce6d9f475156ad3ffce4c68f1261b3e
+  SwiftyMocky: 8c701b84442e63efba60cd0f7838cfbbeceed9c9
 
-PODFILE CHECKSUM: b041a32d93b25e94e21a1a0ec1bef6a344a7fa98
+PODFILE CHECKSUM: 15820c6532308bcde0349b8df7820a0fac6fbecf
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.9.3

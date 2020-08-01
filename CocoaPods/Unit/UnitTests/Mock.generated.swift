@@ -1,43 +1,20 @@
-// Generated using Sourcery 0.16.1 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 0.18.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 
 
-// Generated with SwiftyMocky 3.3.0
+// Generated with SwiftyMocky 4.0.0
 
 import SwiftyMocky
-#if !MockyCustom
 import XCTest
-#endif
 import UIKit
 @testable import Unit
-#if MockyCustom
-    public final class MockyAssertion {
-        public static var handler: ((Bool, String, StaticString, UInt) -> Void)?
-    }
-
-    func MockyAssert(_ expression: @autoclosure () -> Bool, _ message: @autoclosure () -> String = "Verification failed", file: StaticString = #file, line: UInt = #line) {
-        guard let handler = MockyAssertion.handler else {
-            assert(expression(), message(), file: file, line: line)
-            return
-        }
-
-        handler(expression(), message(), file, line)
-    }
-#else
-    func MockyAssert(_ expression: @autoclosure () -> Bool, _ message: @autoclosure () -> String = "Verification failed", file: StaticString = #file, line: UInt = #line) {
-        #if canImport(XCTest)
-        XCTAssert(expression(), message(), file: file, line: line)
-        #else 
-        assert(expression(), message(), file: file, line: line)
-        #endif
-    }
-#endif
 
 
 // MARK: - NumberGenerator
+
 open class NumberGeneratorMock: NumberGenerator, Mock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+    public init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
@@ -62,6 +39,14 @@ open class NumberGeneratorMock: NumberGenerator, Mock {
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -93,14 +78,15 @@ open class NumberGeneratorMock: NumberGenerator, Mock {
         case m_next
         case m_set__range_range(Parameter<ClosedRange<Int>>)
 
-        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
-            case (.m_next, .m_next):
-                return true 
+            case (.m_next, .m_next): return .match
+
             case (.m_set__range_range(let lhsRange), .m_set__range_range(let rhsRange)):
-                guard Parameter.compare(lhs: lhsRange, rhs: rhsRange, with: matcher) else { return false } 
-                return true 
-            default: return false
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsRange, rhs: rhsRange, with: matcher), lhsRange, rhsRange, "range"))
+				return Matcher.ComparisonResult(results)
+            default: return .none
             }
         }
 
@@ -108,6 +94,12 @@ open class NumberGeneratorMock: NumberGenerator, Mock {
             switch self {
             case .m_next: return 0
             case let .m_set__range_range(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_next: return ".next()"
+            case .m_set__range_range: return ".set(range:)"
             }
         }
     }
@@ -162,28 +154,47 @@ open class NumberGeneratorMock: NumberGenerator, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        let fullMatches = matchingCalls(method, file: file, line: line)
+        let success = count.matches(fullMatches)
+        let assertionName = method.method.assertionName()
+        let feedback: String = {
+            guard !success else { return "" }
+            return Utils.closestCallsMessage(
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
+                name: assertionName
+            )
+        }()
+        MockyAssert(success, "Expected: \(count) invocations of `\(assertionName)`, but was: \(fullMatches).\(feedback)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
-        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
-        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
-        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -201,10 +212,8 @@ open class NumberGeneratorMock: NumberGenerator, Mock {
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 

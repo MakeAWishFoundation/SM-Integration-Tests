@@ -7,7 +7,7 @@ target 'Unit' do
   target 'UnitTests' do
     inherit! :search_paths
     # Pods for testing
-    pod 'SwiftyMocky', :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :branch => 'develop'
+    pod 'SwiftyMocky', :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :branch => 'master'
   end
 
 end

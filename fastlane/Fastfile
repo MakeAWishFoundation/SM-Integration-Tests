@@ -16,7 +16,7 @@ platform :ios do
     desc "Carthage integration as main app prototyping library"
     lane :test_carthage_prototyping do
         sh "cd ./../Carthage/Prototyping && carthage update --platform iOS"
-        sh "cd ./../Carthage/Unit && mint run swiftymocky generate"
+        sh "cd ./../Carthage/Prototyping && mint run swiftymocky generate"
         scan(
             scheme: "PrototypingUITests",
             project: "./Carthage/Prototyping/Prototyping.xcodeproj",

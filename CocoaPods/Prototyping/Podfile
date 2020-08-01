@@ -3,12 +3,12 @@ platform :ios, "12.0"
 
 target 'Prototyping' do
   # Pods for Prototyping
-  pod 'SwiftyPrototype', :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :branch => 'develop'
+  pod 'SwiftyPrototype', :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :branch => 'master'
 
   target 'PrototypingTests' do
     inherit! :search_paths
     # Pods for testing
-    pod 'SwiftyMocky', :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :branch => 'develop'
+    pod 'SwiftyMocky', :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :branch => 'master'
   end
 
 end

@@ -237,22 +237,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-UnitTests/Pods-UnitTests-resources.sh",
-				"${PODS_ROOT}/SwiftyMocky/get_sourcery.sh",
-				"${PODS_ROOT}/SwiftyMocky/Sources/Templates/Mock.swifttemplate",
+				"${PODS_ROOT}/Target Support Files/Pods-UnitTests/Pods-UnitTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/get_sourcery.sh",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Mock.swifttemplate",
+				"${PODS_ROOT}/Target Support Files/Pods-UnitTests/Pods-UnitTests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-UnitTests/Pods-UnitTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UnitTests/Pods-UnitTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		66948D2DCC2F4210D71DFA4A /* [CP] Check Pods Manifest.lock */ = {

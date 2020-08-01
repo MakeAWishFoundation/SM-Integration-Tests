@@ -12,7 +12,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-       .package(url: "https://github.com/MakeAWishFoundation/SwiftyMocky", .branch("develop")),
+       .package(url: "https://github.com/MakeAWishFoundation/SwiftyMocky", .branch("master")),
     ],
     targets: [
         .target(

@@ -6,8 +6,8 @@ PODS:
     - Sourcery (>= 0.18)
 
 DEPENDENCIES:
-  - SwiftyMocky (from `https://github.com/MakeAWishFoundation/SwiftyMocky.git`, branch `develop`)
-  - SwiftyPrototype (from `https://github.com/MakeAWishFoundation/SwiftyMocky.git`, branch `develop`)
+  - SwiftyMocky (from `https://github.com/MakeAWishFoundation/SwiftyMocky.git`, branch `master`)
+  - SwiftyPrototype (from `https://github.com/MakeAWishFoundation/SwiftyMocky.git`, branch `master`)
 
 SPEC REPOS:
   trunk:
@@ -15,18 +15,18 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   SwiftyMocky:
-    :branch: develop
+    :branch: master
     :git: https://github.com/MakeAWishFoundation/SwiftyMocky.git
   SwiftyPrototype:
-    :branch: develop
+    :branch: master
     :git: https://github.com/MakeAWishFoundation/SwiftyMocky.git
 
 CHECKOUT OPTIONS:
   SwiftyMocky:
-    :commit: 801ff2176b1e0c255a4e6117e7677bb1f80c6d7f
+    :commit: a5f1d0ce4d50f89d0ad1c3b870d144a769c8fd0b
     :git: https://github.com/MakeAWishFoundation/SwiftyMocky.git
   SwiftyPrototype:
-    :commit: 801ff2176b1e0c255a4e6117e7677bb1f80c6d7f
+    :commit: a5f1d0ce4d50f89d0ad1c3b870d144a769c8fd0b
     :git: https://github.com/MakeAWishFoundation/SwiftyMocky.git
 
 SPEC CHECKSUMS:
@@ -34,6 +34,6 @@ SPEC CHECKSUMS:
   SwiftyMocky: 8c701b84442e63efba60cd0f7838cfbbeceed9c9
   SwiftyPrototype: babb9bbf1819d8cad06fc15dbcb89ce8b1295cfa
 
-PODFILE CHECKSUM: 379856370fb8e7fafdc740023f3c0af497a54a81
+PODFILE CHECKSUM: 0eee95a15123b6c43d9dc54c93698e4c754c117e
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.3
