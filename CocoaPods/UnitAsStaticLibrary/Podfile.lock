@@ -1,7 +1,7 @@
 PODS:
-  - Sourcery (0.18.0)
-  - SwiftyMocky (4.0.0):
-    - Sourcery (>= 0.18)
+  - Sourcery (1.0.2)
+  - SwiftyMocky (4.0.3):
+    - Sourcery (>= 1.0.2)
 
 DEPENDENCIES:
   - SwiftyMocky (from `https://github.com/MakeAWishFoundation/SwiftyMocky.git`, branch `master`)
@@ -17,12 +17,12 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   SwiftyMocky:
-    :commit: a5f1d0ce4d50f89d0ad1c3b870d144a769c8fd0b
+    :commit: 461d2e6d5044c116a756b4ea18b4e92ba48414f1
     :git: https://github.com/MakeAWishFoundation/SwiftyMocky.git
 
 SPEC CHECKSUMS:
-  Sourcery: e0e8658a1ce6d9f475156ad3ffce4c68f1261b3e
-  SwiftyMocky: 8c701b84442e63efba60cd0f7838cfbbeceed9c9
+  Sourcery: e8951e8759ef6a3a0cce412db64832dd23343041
+  SwiftyMocky: d3a1d3f4fb6978f34ef7b8acfd3860c089fc24da
 
 PODFILE CHECKSUM: 60ab6864aeda2821dc3ae2d45b1b7d3948e79a5f
 
