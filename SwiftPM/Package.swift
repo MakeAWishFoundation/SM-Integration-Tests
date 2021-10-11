@@ -6,14 +6,7 @@ import PackageDescription
 let package = Package(
     name: "SwiftPM",
     products: [
-        .library(
-            name: "Prototype",
-            targets: ["Prototype"]
-        ),
-        .library(
-            name: "UnitTests",
-            targets: ["UnitTests"]
-        ),
+        .executable(name: "prototype", targets: ["Prototype"]),
     ],
     dependencies: [
        .package(url: "https://github.com/MakeAWishFoundation/SwiftyMocky", .branch("master")),
