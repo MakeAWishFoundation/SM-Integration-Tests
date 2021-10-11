@@ -1,14 +1,18 @@
-// swift-tools-version:5.0
+// swift-tools-version:5.2
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
 
 let package = Package(
-    name: "Unit",
+    name: "SwiftPM",
     products: [
         .library(
-            name: "Unit",
-            targets: ["Unit"]
+            name: "Prototype",
+            targets: ["Prototype"]
+        ),
+        .library(
+            name: "UnitTests",
+            targets: ["UnitTests"]
         ),
     ],
     dependencies: [
@@ -16,15 +20,15 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "Unit",
+            name: "Prototype",
             dependencies: [
-                "SwiftyPrototype",
+                .product(name: "SwiftyPrototype", package: "SwiftyMocky"),
             ]
         ),
         .testTarget(
             name: "UnitTests",
             dependencies: [
-                "Unit",
+                "Prototype",
                 "SwiftyMocky"
             ]
         ),

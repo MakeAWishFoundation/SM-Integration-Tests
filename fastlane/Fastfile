@@ -3,6 +3,38 @@ fastlane_version "2.51.0"
 default_platform :ios
 
 platform :ios do
+
+    # CocoaPods
+
+    desc "Cocoapods integration with unit tests"
+    lane :test_pods_unit do
+        sh "cd ./../CocoaPods/Unit && pod update"
+        scan(
+            scheme: "UnitTests",
+            workspace: "./CocoaPods/Unit/Unit.xcworkspace",
+        )
+    end
+
+    desc "Cocoapods integration with unit tests as Static library"
+    lane :test_pods_unit_static do
+        sh "cd ./../CocoaPods/UnitAsStaticLibrary && pod update"
+        scan(
+            scheme: "UnitTests",
+            workspace: "./CocoaPods/Unit/Unit.xcworkspace",
+        )
+    end
+
+    desc "Cocoapods integration as main app prototyping library"
+    lane :test_pods_prototyping do
+        sh "cd ./../CocoaPods/Prototyping && pod update"
+        scan(
+            scheme: "PrototypingUITests",
+            workspace: "./CocoaPods/Prototyping/Prototyping.xcworkspace",
+        )
+    end
+
+    # Carthage
+
     desc "Carthage integration with unit tests"
     lane :test_carthage_unit do
         sh "cd ./../Carthage/Unit && carthage update --platform iOS"
@@ -23,32 +55,7 @@ platform :ios do
         )
     end
 
-    desc "Cocoapods integration with unit tests"
-    lane :test_pods_unit do
-        sh "cd ./../CocoaPods/Unit && pod install"
-        scan(
-            scheme: "UnitTests",
-            workspace: "./CocoaPods/Unit/Unit.xcworkspace",
-        )
-    end
 
-    desc "Cocoapods integration with unit tests as Static library"
-    lane :test_pods_unit_static do
-        sh "cd ./../CocoaPods/UnitAsStaticLibrary && pod install"
-        scan(
-            scheme: "UnitTests",
-            workspace: "./CocoaPods/Unit/Unit.xcworkspace",
-        )
-    end
-
-    desc "Cocoapods integration as main app prototyping library"
-    lane :test_pods_prototyping do
-        sh "cd ./../CocoaPods/Prototyping && pod install"
-        scan(
-            scheme: "PrototypingUITests",
-            workspace: "./CocoaPods/Prototyping/Prototyping.xcworkspace",
-        )
-    end
 
 end
 

@@ -12,20 +12,10 @@ Install _fastlane_ using
 ```
 [sudo] gem install fastlane -NV
 ```
-or alternatively using `brew cask install fastlane`
+or alternatively using `brew install fastlane`
 
 # Available Actions
 ## iOS
-### ios test_carthage_unit
-```
-fastlane ios test_carthage_unit
-```
-Carthage integration with unit tests
-### ios test_carthage_prototyping
-```
-fastlane ios test_carthage_prototyping
-```
-Carthage integration as main app prototyping library
 ### ios test_pods_unit
 ```
 fastlane ios test_pods_unit
@@ -41,6 +31,16 @@ Cocoapods integration with unit tests as Static library
 fastlane ios test_pods_prototyping
 ```
 Cocoapods integration as main app prototyping library
+### ios test_carthage_unit
+```
+fastlane ios test_carthage_unit
+```
+Carthage integration with unit tests
+### ios test_carthage_prototyping
+```
+fastlane ios test_carthage_prototyping
+```
+Carthage integration as main app prototyping library
 
 ----
 

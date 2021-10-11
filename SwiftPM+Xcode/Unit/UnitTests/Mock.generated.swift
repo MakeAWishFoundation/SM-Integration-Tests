@@ -1,15 +1,14 @@
-// Generated using Sourcery 1.6.0 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 0.18.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 
-// Generated with SwiftyMocky 4.1.0-pre
-// Required Sourcery: 1.6.0
 
+// Generated with SwiftyMocky 4.0.0
 
 import SwiftyMocky
 import XCTest
 import UIKit
-@testable import Prototyping
+@testable import Unit
 
 
 // MARK: - NumberGenerator
@@ -26,8 +25,6 @@ open class NumberGeneratorMock: NumberGenerator, Mock {
     var matcher: Matcher = Matcher.default
     var stubbingPolicy: StubbingPolicy = .wrap
     var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
-
-    private var queue = DispatchQueue(label: "com.swiftymocky.invocations", qos: .userInteractive)
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
@@ -175,7 +172,7 @@ open class NumberGeneratorMock: NumberGenerator, Mock {
     }
 
     private func addInvocation(_ call: MethodType) {
-        self.queue.sync { invocations.append(call) }
+        invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
         matcher.set(file: self.file, line: self.line)
