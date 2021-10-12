@@ -17,7 +17,7 @@ jobs:
       - name: Run tests iOS
         run: |
           brew install mint
-          brew install sourcery@160
+          brew install sourcery@1.6.0
           mint bootstrap
           fastlane spm test
           fastlane spm test_xcode_unit
