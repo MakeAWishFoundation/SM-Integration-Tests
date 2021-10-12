@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,7 +13,6 @@
 		C8DAF77B2298AE6C00FF1741 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C8DAF77A2298AE6C00FF1741 /* Assets.xcassets */; };
 		C8DAF77E2298AE6C00FF1741 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8DAF77C2298AE6C00FF1741 /* LaunchScreen.storyboard */; };
 		C8DAF7892298AE6C00FF1741 /* UnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DAF7882298AE6C00FF1741 /* UnitTests.swift */; };
-		C8DAF7992298B1A500FF1741 /* SwiftyMocky.framework in [SwiftyMocky] copy */ = {isa = PBXBuildFile; fileRef = C8DAF7962298B17F00FF1741 /* SwiftyMocky.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CC866BC424D4CCAE0050F760 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DAF7752298AE6B00FF1741 /* ViewController.swift */; };
 		CC866BC524D4CCAE0050F760 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DAF7732298AE6B00FF1741 /* AppDelegate.swift */; };
 		CC866BC924D4CCAE0050F760 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C8DAF77A2298AE6C00FF1741 /* Assets.xcassets */; };
@@ -21,11 +20,9 @@
 		CC866BD524D4CD240050F760 /* UnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DAF7882298AE6C00FF1741 /* UnitTests.swift */; };
 		CC866BE524D4D0650050F760 /* Main-tvOS.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC866BE424D4D0650050F760 /* Main-tvOS.storyboard */; };
 		CC866BE824D4D8170050F760 /* LaunchScreen-tvOS.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC866BE624D4D6330050F760 /* LaunchScreen-tvOS.storyboard */; };
-		CC866BEA24D4D9D90050F760 /* SwiftyMocky.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC866BE924D4D9D90050F760 /* SwiftyMocky.framework */; };
-		CC866BED24D4DADB0050F760 /* SwiftyMocky.framework in Resources */ = {isa = PBXBuildFile; fileRef = CC866BE924D4D9D90050F760 /* SwiftyMocky.framework */; };
-		CC866BEE24D4DADD0050F760 /* SwiftyMocky.framework in [SwiftyMocky] copy */ = {isa = PBXBuildFile; fileRef = CC866BE924D4D9D90050F760 /* SwiftyMocky.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CC94BE6027164770003DC279 /* SwiftyMocky.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC94BE5F27164770003DC279 /* SwiftyMocky.xcframework */; };
+		CC94BE6127164777003DC279 /* SwiftyMocky.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC94BE5F27164770003DC279 /* SwiftyMocky.xcframework */; };
 		CCCB8AB024A0990F003CA85F /* Mock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DAF7932298B0B000FF1741 /* Mock.generated.swift */; };
-		CCCB8AB124A09A6E003CA85F /* SwiftyMocky.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8DAF7962298B17F00FF1741 /* SwiftyMocky.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,7 +49,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				C8DAF7992298B1A500FF1741 /* SwiftyMocky.framework in [SwiftyMocky] copy */,
 			);
 			name = "[SwiftyMocky] copy";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -63,7 +59,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CC866BEE24D4DADD0050F760 /* SwiftyMocky.framework in [SwiftyMocky] copy */,
 			);
 			name = "[SwiftyMocky] copy";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -82,15 +77,12 @@
 		C8DAF7882298AE6C00FF1741 /* UnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitTests.swift; sourceTree = "<group>"; };
 		C8DAF78A2298AE6C00FF1741 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C8DAF7932298B0B000FF1741 /* Mock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mock.generated.swift; sourceTree = "<group>"; };
-		C8DAF7962298B17F00FF1741 /* SwiftyMocky.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyMocky.framework; path = Carthage/Build/iOS/SwiftyMocky.framework; sourceTree = "<group>"; };
 		CC866BCE24D4CCAE0050F760 /* Unit-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Unit-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CC866BCF24D4CCAE0050F760 /* Unit copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Unit copy-Info.plist"; path = "/Users/andrzejmichnia/Projekty/SM-Integration-Tests/Carthage/Unit/Unit copy-Info.plist"; sourceTree = "<absolute>"; };
 		CC866BDE24D4CD240050F760 /* UnitTests-tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "UnitTests-tvOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CC866BDF24D4CD240050F760 /* UnitTests copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "UnitTests copy-Info.plist"; path = "/Users/andrzejmichnia/Projekty/SM-Integration-Tests/Carthage/Unit/UnitTests copy-Info.plist"; sourceTree = "<absolute>"; };
 		CC866BE424D4D0650050F760 /* Main-tvOS.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Main-tvOS.storyboard"; sourceTree = "<group>"; };
 		CC866BE624D4D6330050F760 /* LaunchScreen-tvOS.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "LaunchScreen-tvOS.storyboard"; sourceTree = "<group>"; };
-		CC866BE924D4D9D90050F760 /* SwiftyMocky.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyMocky.framework; path = Carthage/Build/tvOS/SwiftyMocky.framework; sourceTree = "<group>"; };
 		CC866BEF24D4DC7C0050F760 /* Info-tvOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-tvOS.plist"; sourceTree = "<group>"; };
+		CC94BE5F27164770003DC279 /* SwiftyMocky.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = SwiftyMocky.xcframework; path = Carthage/Build/SwiftyMocky.xcframework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,7 +97,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CCCB8AB124A09A6E003CA85F /* SwiftyMocky.framework in Frameworks */,
+				CC94BE6027164770003DC279 /* SwiftyMocky.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,7 +112,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CC866BEA24D4D9D90050F760 /* SwiftyMocky.framework in Frameworks */,
+				CC94BE6127164777003DC279 /* SwiftyMocky.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,8 +126,6 @@
 				C8DAF7872298AE6C00FF1741 /* UnitTests */,
 				C8DAF7712298AE6B00FF1741 /* Products */,
 				C8DAF7952298B17E00FF1741 /* Frameworks */,
-				CC866BCF24D4CCAE0050F760 /* Unit copy-Info.plist */,
-				CC866BDF24D4CD240050F760 /* UnitTests copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -179,8 +169,7 @@
 		C8DAF7952298B17E00FF1741 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CC866BE924D4D9D90050F760 /* SwiftyMocky.framework */,
-				C8DAF7962298B17F00FF1741 /* SwiftyMocky.framework */,
+				CC94BE5F27164770003DC279 /* SwiftyMocky.xcframework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -335,7 +324,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CC866BED24D4DADB0050F760 /* SwiftyMocky.framework in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

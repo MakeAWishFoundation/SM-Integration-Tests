@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,13 +13,12 @@
 		C8294E8722992C320036BC94 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C8294E8622992C320036BC94 /* Assets.xcassets */; };
 		C8294E8A22992C320036BC94 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8294E8822992C320036BC94 /* LaunchScreen.storyboard */; };
 		C8294E9522992C320036BC94 /* PrototypingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8294E9422992C320036BC94 /* PrototypingTests.swift */; };
-		C8294EC522993D540036BC94 /* SwiftyPrototype.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8294EC422993D540036BC94 /* SwiftyPrototype.framework */; };
-		C8294EC622993D540036BC94 /* SwiftyPrototype.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C8294EC422993D540036BC94 /* SwiftyPrototype.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C8294EC7229940800036BC94 /* Prototypes.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8294EA322992E730036BC94 /* Prototypes.generated.swift */; };
 		C887429B22996FF30028F6EC /* PrototypingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C887429A22996FF30028F6EC /* PrototypingUITests.swift */; };
+		CC94BE63271648B2003DC279 /* SwiftyPrototype.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC94BE62271648B2003DC279 /* SwiftyPrototype.xcframework */; };
+		CC94BE64271648B2003DC279 /* SwiftyPrototype.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CC94BE62271648B2003DC279 /* SwiftyPrototype.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CC94BE66271648D1003DC279 /* SwiftyMocky.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC94BE65271648D1003DC279 /* SwiftyMocky.xcframework */; };
 		CCCB8AAF24A096F8003CA85F /* Mock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB8AAE24A096F8003CA85F /* Mock.generated.swift */; };
-		CCCB8AB724A09AED003CA85F /* SwiftyMocky.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCCB8AB324A09A9C003CA85F /* SwiftyMocky.framework */; };
-		CCCB8AB924A09B0B003CA85F /* SwiftyMocky.framework in [SwifyMocky] Copy framwork */ = {isa = PBXBuildFile; fileRef = CCCB8AB324A09A9C003CA85F /* SwiftyMocky.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,20 +45,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				C8294EC622993D540036BC94 /* SwiftyPrototype.framework in Embed Frameworks */,
+				CC94BE64271648B2003DC279 /* SwiftyPrototype.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CCCB8AB824A09AF3003CA85F /* [SwifyMocky] Copy framwork */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				CCCB8AB924A09B0B003CA85F /* SwiftyMocky.framework in [SwifyMocky] Copy framwork */,
-			);
-			name = "[SwifyMocky] Copy framwork";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -76,10 +64,11 @@
 		C8294E9422992C320036BC94 /* PrototypingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrototypingTests.swift; sourceTree = "<group>"; };
 		C8294E9622992C320036BC94 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C8294EA322992E730036BC94 /* Prototypes.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Prototypes.generated.swift; sourceTree = "<group>"; };
-		C8294EC422993D540036BC94 /* SwiftyPrototype.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyPrototype.framework; path = Carthage/Build/iOS/SwiftyPrototype.framework; sourceTree = "<group>"; };
 		C887429822996FF30028F6EC /* PrototypingUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PrototypingUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C887429A22996FF30028F6EC /* PrototypingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrototypingUITests.swift; sourceTree = "<group>"; };
 		C887429C22996FF30028F6EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CC94BE62271648B2003DC279 /* SwiftyPrototype.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = SwiftyPrototype.xcframework; path = Carthage/Build/SwiftyPrototype.xcframework; sourceTree = "<group>"; };
+		CC94BE65271648D1003DC279 /* SwiftyMocky.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = SwiftyMocky.xcframework; path = Carthage/Build/SwiftyMocky.xcframework; sourceTree = "<group>"; };
 		CCCB8AAE24A096F8003CA85F /* Mock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mock.generated.swift; sourceTree = "<group>"; };
 		CCCB8AB324A09A9C003CA85F /* SwiftyMocky.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyMocky.framework; path = Carthage/Build/iOS/SwiftyMocky.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -89,7 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C8294EC522993D540036BC94 /* SwiftyPrototype.framework in Frameworks */,
+				CC94BE63271648B2003DC279 /* SwiftyPrototype.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,7 +86,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CCCB8AB724A09AED003CA85F /* SwiftyMocky.framework in Frameworks */,
+				CC94BE66271648D1003DC279 /* SwiftyMocky.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,7 +103,6 @@
 		C8294E7322992C310036BC94 = {
 			isa = PBXGroup;
 			children = (
-				C8294EC422993D540036BC94 /* SwiftyPrototype.framework */,
 				C8294E7E22992C310036BC94 /* Prototyping */,
 				C8294E9322992C320036BC94 /* PrototypingTests */,
 				C887429922996FF30028F6EC /* PrototypingUITests */,
@@ -169,6 +157,8 @@
 		CCCB8AB224A09A9C003CA85F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CC94BE65271648D1003DC279 /* SwiftyMocky.xcframework */,
+				CC94BE62271648B2003DC279 /* SwiftyPrototype.xcframework */,
 				CCCB8AB324A09A9C003CA85F /* SwiftyMocky.framework */,
 			);
 			name = Frameworks;
@@ -202,7 +192,6 @@
 				C8294E8C22992C320036BC94 /* Sources */,
 				C8294E8D22992C320036BC94 /* Frameworks */,
 				C8294E8E22992C320036BC94 /* Resources */,
-				CCCB8AB824A09AF3003CA85F /* [SwifyMocky] Copy framwork */,
 			);
 			buildRules = (
 			);

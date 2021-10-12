@@ -1,4 +1,4 @@
-name: Carthage Integration Tests
+name: SwiftPM Integration Tests
 on:
   push:
     branches:
@@ -20,6 +20,6 @@ jobs:
           mint bootstrap
       - name: Run tests iOS
         run: |
-          fastlane ios test_carthage_unit
-          fastlane ios test_carthage_prototyping
-          fastlane tvos test_carthage_unit
+          fastlane spm test
+          fastlane spm test_xcode_unit
+          fastlane spm test_xcode_prototyping
