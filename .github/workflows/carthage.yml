@@ -17,7 +17,7 @@ jobs:
       - name: Install tools
         run: |
           brew install mint
-          mint bootstrap
+          mint install MakeAWishFoundation/SwiftyMocky@master
       - name: Run tests iOS
         run: |
           fastlane ios test_carthage_unit

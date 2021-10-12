@@ -38,7 +38,7 @@ platform :ios do
     desc "Carthage integration with unit tests"
     lane :test_carthage_unit do
         sh "cd ./../Carthage/Unit && carthage update --platform iOS --use-xcframeworks"
-        sh "cd ./../Carthage/Unit && mint run swiftymocky generate"
+        sh "cd ./../Carthage/Unit && swiftymocky generate"
         scan(
             scheme: "UnitTests",
             project: "./Carthage/Unit/Unit.xcodeproj",
@@ -48,7 +48,7 @@ platform :ios do
     desc "Carthage integration as main app prototyping library"
     lane :test_carthage_prototyping do
         sh "cd ./../Carthage/Prototyping && carthage update --platform iOS --use-xcframeworks"
-        sh "cd ./../Carthage/Prototyping && mint run swiftymocky generate"
+        sh "cd ./../Carthage/Prototyping && swiftymocky generate"
         scan(
             scheme: "PrototypingUITests",
             project: "./Carthage/Prototyping/Prototyping.xcodeproj",
@@ -61,7 +61,7 @@ platform :tvos do
     desc "Carthage integration with unit tests"
     lane :test_carthage_unit do
         sh "cd ./../Carthage/Unit && carthage update --platform tvOS --use-xcframeworks"
-        sh "cd ./../Carthage/Unit && mint run swiftymocky generate"
+        sh "cd ./../Carthage/Unit && swiftymocky generate"
         scan(
             scheme: "UnitTests-tvOS",
             project: "./Carthage/Unit/Unit.xcodeproj",
@@ -72,12 +72,12 @@ end
 platform :spm do
 
     lane :test do
-        sh "cd ../SwiftPM && mint run swiftymocky generate"
+        sh "cd ../SwiftPM && swiftymocky generate"
         sh "cd ../SwiftPM && swift test"
     end
 
     lane :test_xcode_unit do
-        sh "cd ./../SwiftPM+Xcode/Unit && mint run swiftymocky generate"
+        sh "cd ./../SwiftPM+Xcode/Unit && swiftymocky generate"
         scan(
             scheme: "UnitTests",
             project: "./SwiftPM+Xcode/Unit/Unit.xcodeproj",
@@ -85,7 +85,7 @@ platform :spm do
     end
 
     lane :test_xcode_prototyping do
-        sh "cd ./../SwiftPM+Xcode/Prototyping && mint run swiftymocky generate"
+        sh "cd ./../SwiftPM+Xcode/Prototyping && swiftymocky generate"
         scan(
             scheme: "PrototypingUITests",
             project: "./SwiftPM+Xcode/Prototyping/Prototyping.xcodeproj",
