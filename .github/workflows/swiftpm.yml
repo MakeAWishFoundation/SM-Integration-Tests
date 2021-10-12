@@ -18,6 +18,7 @@ jobs:
         run: |
           brew install mint
           mint install MakeAWishFoundation/SwiftyMocky@master
+          mint install krzysztofzablocki/Sourcery@1.6.0
           PATH=$PATH:/Users/runner/.mint/bin
           fastlane spm test
           fastlane spm test_xcode_unit

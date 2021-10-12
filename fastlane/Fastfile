@@ -72,7 +72,7 @@ end
 platform :spm do
 
     lane :test do
-        sh "cd ../SwiftPM && swiftymocky generate"
+        sh "cd ../SwiftPM && mint run swiftymocky generate"
         sh "cd ../SwiftPM && swift test"
     end
 
