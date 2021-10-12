@@ -1,5 +1,5 @@
 # Mockfile is a SwiftyMocky YAML configuration file
-sourceryCommand: null
+sourceryCommand: sourcery
 
 unit.prototype:
   prototype: true

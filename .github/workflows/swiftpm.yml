@@ -17,10 +17,8 @@ jobs:
       - name: Run tests iOS
         run: |
           brew install mint
-          mint install MakeAWishFoundation/SwiftyMocky@master
-          mint install krzysztofzablocki/Sourcery@1.6.0
-          PATH=$PATH:/Users/runner/.mint/bin
-          cd ./SwiftPM && mint run swiftymocky generate
+          brew install sourcery@160
+          mint bootstrap
           fastlane spm test
           fastlane spm test_xcode_unit
           fastlane spm test_xcode_prototyping
