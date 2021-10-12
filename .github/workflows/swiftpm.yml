@@ -14,13 +14,11 @@ jobs:
         uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: '12.4.0'
-      - name: Install tools
+      - name: Run tests iOS
         run: |
           brew install mint
           mint install MakeAWishFoundation/SwiftyMocky@master
           PATH=$PATH:/Users/runner/.mint/bin
-      - name: Run tests iOS
-        run: |
           fastlane spm test
           fastlane spm test_xcode_unit
           fastlane spm test_xcode_prototyping
