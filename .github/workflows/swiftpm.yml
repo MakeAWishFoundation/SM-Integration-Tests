@@ -17,7 +17,8 @@ jobs:
       - name: Install tools
         run: |
           brew install mint
-          mint bootstrap
+          mint install MakeAWishFoundation/SwiftyMocky@master
+          PATH=$PATH:/Users/runner/.mint/bin
       - name: Run tests iOS
         run: |
           fastlane spm test
