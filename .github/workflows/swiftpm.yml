@@ -20,6 +20,7 @@ jobs:
           mint install MakeAWishFoundation/SwiftyMocky@master
           mint install krzysztofzablocki/Sourcery@1.6.0
           PATH=$PATH:/Users/runner/.mint/bin
+          cd ./SwiftPM && mint run swiftymocky generate
           fastlane spm test
           fastlane spm test_xcode_unit
           fastlane spm test_xcode_prototyping
