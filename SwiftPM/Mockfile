@@ -26,6 +26,6 @@ unit.tests.mock:
   targets:
     - Package.swift/UnitTests
   testable:
-    - Unit
+    - UnitLibrary
   import:
     - Foundation

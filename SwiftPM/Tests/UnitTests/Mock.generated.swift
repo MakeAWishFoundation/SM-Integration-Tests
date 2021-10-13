@@ -9,7 +9,7 @@
 import SwiftyMocky
 import XCTest
 import Foundation
-@testable import Unit
+@testable import UnitLibrary
 
 
 // MARK: - NumberGenerator
