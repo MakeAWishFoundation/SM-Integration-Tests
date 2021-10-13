@@ -1,24 +1,26 @@
-sourceryCommand: sourcery
+sourceryCommand: ../.bin/bin/sourcery
 sourceryTemplate: null
 
 unit.prototype:
   prototype: true
   sources:
     include:
-        - ./Sources/Unit
-    exclude: []
+        - ./Sources/UnitLibrary
+    exclude:
+        - Prototypes.generated.swift
   output:
-    ./Sources/Unit/Prototypes.generated.swift
+    ./Sources/UnitLibrary/Prototypes.generated.swift
   targets:
-    - Package.swift/Unit
+    - Package.swift/UnitLibrary
   import:
     - Foundation
 
 unit.tests.mock:
   sources:
     include:
-        - ./Sources/Unit
-    exclude: []
+        - ./Sources/UnitLibrary
+    exclude:
+        - Prototypes.generated.swift
   output:
     ./Tests/UnitTests/Mock.generated.swift
   targets:

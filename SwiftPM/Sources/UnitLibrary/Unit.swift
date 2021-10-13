@@ -1,9 +1,11 @@
 import SwiftyPrototype
 
-struct Unit {
-    var text = "Hello, World!"
+public struct Unit {
+    public var text = "Hello, World!"
 
-    func usePrototype() {
+    public init() {}
+
+    public func usePrototype() {
         let generator = NumberGeneratorPrototype()
 
         Given(generator, .next(willReturn: 0, 1, 2, 3, 4))

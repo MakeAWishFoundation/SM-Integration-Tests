@@ -1,4 +1,4 @@
-sourceryCommand: sourcery
+sourceryCommand: ../../.bin/bin/sourcery
 sourceryTemplate: null
 
 UnitTests:
