@@ -37,8 +37,8 @@ platform :ios do
 
     desc "Carthage integration with unit tests"
     lane :test_carthage_unit do
-        sh "cd ./../Carthage/Unit && carthage update --platform iOS --use-xcframeworks"
         sh "cd ./../Carthage/Unit && swiftymocky generate"
+        sh "cd ./../Carthage/Unit && carthage update --platform iOS --use-xcframeworks"
         scan(
             scheme: "UnitTests",
             project: "./Carthage/Unit/Unit.xcodeproj",
@@ -47,8 +47,8 @@ platform :ios do
 
     desc "Carthage integration as main app prototyping library"
     lane :test_carthage_prototyping do
-        sh "cd ./../Carthage/Prototyping && carthage update --platform iOS --use-xcframeworks"
         sh "cd ./../Carthage/Prototyping && swiftymocky generate"
+        sh "cd ./../Carthage/Prototyping && carthage update --platform iOS --use-xcframeworks"
         scan(
             scheme: "PrototypingUITests",
             project: "./Carthage/Prototyping/Prototyping.xcodeproj",
