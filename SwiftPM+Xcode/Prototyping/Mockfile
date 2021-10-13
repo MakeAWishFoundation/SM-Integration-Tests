@@ -1,4 +1,5 @@
-sourceryCommand: null
+sourceryCommand: sourcery
+sourceryTemplate: null
 
 Prototype:
   prototype: true

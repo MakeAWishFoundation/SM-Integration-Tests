@@ -16,9 +16,11 @@ jobs:
           xcode-version: '12.4.0'
       - name: Run tests iOS
         run: |
+          rake sourcery 1.6.0
+          PATH=$PATH:./.bin/bin
+          which sourcery
           brew install mint
-          brew install sourcery
-          mint bootstrap
+          mint install swiftymocky
           fastlane spm test
           fastlane spm test_xcode_unit
           fastlane spm test_xcode_prototyping

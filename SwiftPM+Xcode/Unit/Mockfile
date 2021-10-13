@@ -1,4 +1,4 @@
-sourceryCommand: null
+sourceryCommand: sourcery
 sourceryTemplate: null
 
 UnitTests:

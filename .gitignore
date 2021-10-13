@@ -70,3 +70,4 @@ CocoaPods/.DS_Store
 .DS_Store
 .vscode
 **/Carthage/Checkouts
+.bin
