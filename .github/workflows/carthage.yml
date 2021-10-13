@@ -18,9 +18,6 @@ jobs:
         run: |
           rake sourcery 1.6.0
           PATH=$PATH:./.bin/bin
-          brew install mint
-          mint install swiftymocky
-          PATH=$PATH:/Users/runner/.mint/bin
           fastlane ios test_carthage_unit
           fastlane ios test_carthage_prototyping
           fastlane tvos test_carthage_unit

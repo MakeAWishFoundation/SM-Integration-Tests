@@ -58,7 +58,17 @@ Carthage integration with unit tests
 ```
 fastlane spm test
 ```
-Runs all the tests
+
+### spm test_xcode_unit
+```
+fastlane spm test_xcode_unit
+```
+
+### spm test_xcode_prototyping
+```
+fastlane spm test_xcode_prototyping
+```
+
 
 ----
 

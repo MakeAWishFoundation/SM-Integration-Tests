@@ -1,9 +1,10 @@
-// Generated using Sourcery 0.18.0 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 1.6.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 
+// Generated with SwiftyPrototype 4.1.0-pre
+// Required Sourcery: 1.6.0
 
-// Generated with SwiftyPrototype 4.0.0
 
 import SwiftyPrototype
 import UIKit
@@ -23,6 +24,8 @@ open class NumberGeneratorPrototype: NumberGenerator, Mock {
     var matcher: Matcher = Matcher.default
     var stubbingPolicy: StubbingPolicy = .wrap
     var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+
+    private var queue = DispatchQueue(label: "com.swiftymocky.invocations", qos: .userInteractive)
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
@@ -170,7 +173,7 @@ open class NumberGeneratorPrototype: NumberGenerator, Mock {
     }
 
     private func addInvocation(_ call: MethodType) {
-        invocations.append(call)
+        self.queue.sync { invocations.append(call) }
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
         matcher.set(file: self.file, line: self.line)

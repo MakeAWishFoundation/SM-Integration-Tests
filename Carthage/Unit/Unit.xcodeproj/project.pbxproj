@@ -42,29 +42,6 @@
 		};
 /* End PBXContainerItemProxy section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		C8DAF7982298B18700FF1741 /* [SwiftyMocky] copy */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "[SwiftyMocky] copy";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CC866BD924D4CD240050F760 /* [SwiftyMocky] copy */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "[SwiftyMocky] copy";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		C8DAF7702298AE6B00FF1741 /* Unit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Unit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8DAF7732298AE6B00FF1741 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -201,7 +178,6 @@
 				C8DAF7802298AE6C00FF1741 /* Sources */,
 				C8DAF7812298AE6C00FF1741 /* Frameworks */,
 				C8DAF7822298AE6C00FF1741 /* Resources */,
-				C8DAF7982298B18700FF1741 /* [SwiftyMocky] copy */,
 			);
 			buildRules = (
 			);
@@ -237,7 +213,6 @@
 				CC866BD324D4CD240050F760 /* Sources */,
 				CC866BD624D4CD240050F760 /* Frameworks */,
 				CC866BD824D4CD240050F760 /* Resources */,
-				CC866BD924D4CD240050F760 /* [SwiftyMocky] copy */,
 			);
 			buildRules = (
 			);
@@ -562,7 +537,6 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YYAKJ5SR76;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/Build/iOS";
 				INFOPLIST_FILE = UnitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -585,7 +559,6 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YYAKJ5SR76;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/Build/iOS";
 				INFOPLIST_FILE = UnitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -650,7 +623,6 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YYAKJ5SR76;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/Build/tvOS";
 				INFOPLIST_FILE = UnitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -674,7 +646,6 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YYAKJ5SR76;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/Build/tvOS";
 				INFOPLIST_FILE = UnitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
