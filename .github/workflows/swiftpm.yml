@@ -21,6 +21,8 @@ jobs:
           which sourcery
           brew install mint
           mint install swiftymocky
+          PATH=$PATH:/Users/runner/.mint/bin
+          which swiftymocky
           fastlane spm test
           fastlane spm test_xcode_unit
           fastlane spm test_xcode_prototyping
