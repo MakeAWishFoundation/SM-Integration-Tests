@@ -14,7 +14,7 @@ jobs:
         uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: '12.4.0'
-      - name: Run tests iOS
+      - name: Run tests
         run: |
           fastlane ios test_pods_unit
           fastlane ios test_pods_unit_static
